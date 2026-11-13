@@ -15,7 +15,7 @@ npm run demo
 
 Open `http://127.0.0.1:5273`. The local NEAR Sandbox creates temporary test wallets and real local positions. No public-network transactions or valuable tokens are used.
 
-[Setup and judge guide](docs/SETUP.md) · [Contract architecture](docs/ARCHITECTURE.md) · [Release plan](docs/RELEASE.md)
+[Setup and judge guide](docs/SETUP.md) · [Contract architecture](docs/ARCHITECTURE.md) · [Hackathon materials](docs/HACKATHON-MATERIALS.md)
 
 Only the reference vault is integrated. Rhea and other third-party DeFi locks require a verified source adapter. This is an unaudited prototype with retained upgrade keys and documented callback recovery limits.
 

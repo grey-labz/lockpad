@@ -33,7 +33,7 @@ const verification = {
   browserBehaviors: { count: reports["browser-tests"].checks.length, executedAt: reports["browser-tests"].executedAt, viewports: [1440, 768, 390, 320] },
   releaseBehaviors: { count: reports["release-tests"].checks.length, executedAt: reports["release-tests"].executedAt, deploymentSignatures: reports["release-tests"].signatures, deploymentBroadcasts: reports["release-tests"].broadcasts },
   contracts: plan.contracts.map(({ role, file, sha256, codeHash }) => ({ role, file, sha256, codeHash })),
-  publicDeployment: "Pending human confirmation", publication: "Pending human confirmation", submission: "Not submitted by this continuation", actors: "Temporary builder-controlled local fixtures; no public wallet acceptance or independent adoption", packageDirectory: directory,
+  hackathonPath: "Reproducible local build, public source and working X demo video (Q-012)", publicDeployment: "Optional; not requested for the current hackathon path", publication: "Current source awaits explicit human confirmation", submission: "Not submitted by this continuation", actors: "Temporary builder-controlled local fixtures; no public wallet acceptance or independent adoption", packageDirectory: directory,
 };
 await writeFile(join(project, "docs/evidence/verification.json"), JSON.stringify(verification, null, 2) + "\n");
 

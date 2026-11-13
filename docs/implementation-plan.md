@@ -27,3 +27,5 @@ Centered landing page; real marketplace with search, maturity/discount filters a
 Primary track: Unstoppable DeFi (`defi`). An NFT represents an executable payout right, but no AI or NEAR Intents integration is claimed. Official Q-011 says those integrations are optional; Q-010 permits testnet-only projects. Keep a clear baseline diff, reproducible judge guide, MIT license and working demo recording. Development deadline: 14 November 2026 at 23:59 UTC (15 November 00:59 in Lagos).
 
 The original imported repository remains in `outputs/timeshift`. Canonical working root is `/home/greyw0rks/Lockpad`, branch `hackathon/lockpad-resale`, baseline `cb4097c`. Publishing, public-network transactions and submission need the separate confirmations specified by HACKATHON.md.
+
+The user clarified during the 13 November continuation that the hackathon focus is idea, build and demo video. Q-012 permits a local-only working demo with reproducible public source and an X video. Keep one local reference position as the recording's test input. Public marketplace seeding and public testnet deployment are optional, outside the current submission path.

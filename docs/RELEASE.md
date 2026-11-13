@@ -1,5 +1,7 @@
 # Release Lockpad
 
+Public testnet deployment is optional for this hackathon. The user's current path is [idea → local build → working demo video](HACKATHON-MATERIALS.md), with publication of the current source and a human-published X video. The tooling below is prepared for a later public testnet release if requested.
+
 The current release candidate is local. The reviewed [deployment plan](evidence/release-plan.json) targets a new test token, separate reference vault and marketplace. The existing [public repository](https://github.com/greyw0rks/timeshift) and [Pages app](https://greyw0rks.github.io/timeshift/) still contain baseline `cb4097c1249052d2f8940d9c88969b99023e98c1`.
 
 | Role | Proposed testnet account | Fresh-account funding reserve |
@@ -18,7 +20,7 @@ The [organizer instructions](evidence/hackathon-rules-2026-11-13.md), under “N
 >
 > Sign transactions, spend tokens or deploy to mainnet.
 
-The approved implementation plan also reserves separate confirmation for public-network transactions. The next approval covers creating these three fresh testnet accounts, deploying the reviewed Wasm and its exact initializers, making both token registrations, and publishing this reviewed source and Pages build. Submission remains a separate exact-payload confirmation. Local Sandbox checks and package preparation are complete before asking for that release approval.
+The approved implementation plan also reserves separate confirmation for public-network transactions. If this optional deployment is requested, its approval covers creating these three fresh testnet accounts, deploying the reviewed Wasm and its exact initializers, making both token registrations, and publishing the matching Pages build. Publication of the current source is required for the local-only hackathon path; submission remains a separate exact-payload confirmation.
 
 ## Prepare and deploy
 
