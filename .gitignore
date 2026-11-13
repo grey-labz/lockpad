@@ -2,5 +2,16 @@ node_modules/
 dist/
 target/
 .env
-.env.local
+.env.*
+!.env.example
 *.log
+*:Zone.Identifier
+work/
+outputs/
+.demo/
+.release/
+test-results/
+playwright-report/
+docs/screenshots/browser-failure.png
+**/testnet-keys/
+**/credentials/

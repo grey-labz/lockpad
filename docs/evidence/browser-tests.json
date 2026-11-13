@@ -1,0 +1,319 @@
+{
+  "network": "isolated local NEAR Sandbox",
+  "actors": "Temporary builder-controlled wallets; no independent adoption",
+  "checks": [
+    "Home separates illustrative trade cards from actual local listings",
+    "Search, maturity, exact discount filters and sorting use real market data",
+    "Review dialogs trap keyboard focus, restore focus on Escape and never auto-submit",
+    "Seller lists an existing payout NFT without moving its principal or maturity",
+    "Import rejects a payout right the connected wallet does not own",
+    "A double press creates one purchase, delivers the original NFT and credits seller proceeds",
+    "Seller withdraws the agreed 920 TUSD early-exit payment",
+    "Buyer claims 1000 TUSD only after original maturity; reload neither reclaims nor replays",
+    "The UI faucet and separate reference vault create a real listable test payout right",
+    "A real cancellation between funding and buy leaves a recoverable balance; UI withdraws it",
+    "A failed action keeps its own receipt; checking it never replays a transaction",
+    "Marketplace token holdings exactly cover all remaining payment liabilities",
+    "Seven app routes fit desktop, tablet, 390px and 320px without horizontal overflow",
+    "Mobile navigation closes on selection and reduced motion removes card movement",
+    "Production build works under /timeshift/ and offers no fabricated or unconfigured trades"
+  ],
+  "errors": [],
+  "screenshots": [
+    "docs/screenshots/home-desktop.png",
+    "docs/screenshots/position-desktop.png",
+    "docs/screenshots/home-768.png",
+    "docs/screenshots/home-390.png",
+    "docs/screenshots/marketplace-mobile.png",
+    "docs/screenshots/positions-mobile.png",
+    "docs/screenshots/sell-mobile.png",
+    "docs/screenshots/activity-mobile.png",
+    "docs/screenshots/position-mobile.png",
+    "docs/screenshots/home-320.png"
+  ],
+  "accounts": [
+    {
+      "accountId": "alice.test.near",
+      "name": "Alice",
+      "role": "Seller · has an existing 5-minute lock"
+    },
+    {
+      "accountId": "bob.test.near",
+      "name": "Bob",
+      "role": "Buyer · holds test tokens"
+    },
+    {
+      "accountId": "nora.test.near",
+      "name": "Nora",
+      "role": "Seller · listed reference positions"
+    }
+  ],
+  "maturity": {
+    "method": "Sandbox fastForward(600); source maturity unchanged",
+    "beforeTime": "1794592220975944637",
+    "afterTime": "1794592999421483698",
+    "originalUnlockAt": "1794592459337347060"
+  },
+  "accounting": {
+    "available": "0",
+    "proceeds": "0",
+    "reserved_purchases": "0",
+    "pending_withdrawals": "0",
+    "completed_volume": "920000000",
+    "completed_sales": "1"
+  },
+  "trade": {
+    "original": {
+      "adapter_version": "lockpad-reference-v1",
+      "token_id": "1",
+      "owner_id": "alice.test.near",
+      "asset_id": "token.test.near",
+      "principal": "1000000000",
+      "created_at": "1794592159337347060",
+      "unlock_at": "1794592459337347060",
+      "status": "Active",
+      "transfer_pending": false
+    },
+    "purchased": {
+      "adapter_version": "lockpad-reference-v1",
+      "token_id": "1",
+      "owner_id": "bob.test.near",
+      "asset_id": "token.test.near",
+      "principal": "1000000000",
+      "created_at": "1794592159337347060",
+      "unlock_at": "1794592459337347060",
+      "status": "Active",
+      "transfer_pending": false
+    },
+    "redeemed": {
+      "adapter_version": "lockpad-reference-v1",
+      "token_id": "1",
+      "owner_id": "bob.test.near",
+      "asset_id": "token.test.near",
+      "principal": "1000000000",
+      "created_at": "1794592159337347060",
+      "unlock_at": "1794592459337347060",
+      "status": "Redeemed",
+      "transfer_pending": false
+    },
+    "sellerPayment": "920000000",
+    "buyerPayout": "1000000000",
+    "saleListing": "4"
+  },
+  "layouts": [
+    {
+      "width": 1440,
+      "path": "/",
+      "viewport": 1440,
+      "content": 1440
+    },
+    {
+      "width": 1440,
+      "path": "/marketplace",
+      "viewport": 1440,
+      "content": 1440
+    },
+    {
+      "width": 1440,
+      "path": "/positions",
+      "viewport": 1440,
+      "content": 1440
+    },
+    {
+      "width": 1440,
+      "path": "/sell",
+      "viewport": 1440,
+      "content": 1440
+    },
+    {
+      "width": 1440,
+      "path": "/activity",
+      "viewport": 1440,
+      "content": 1440
+    },
+    {
+      "width": 1440,
+      "path": "/sources",
+      "viewport": 1440,
+      "content": 1440
+    },
+    {
+      "width": 1440,
+      "path": "/position/4",
+      "viewport": 1440,
+      "content": 1440
+    },
+    {
+      "width": 768,
+      "path": "/",
+      "viewport": 768,
+      "content": 768
+    },
+    {
+      "width": 768,
+      "path": "/marketplace",
+      "viewport": 768,
+      "content": 768
+    },
+    {
+      "width": 768,
+      "path": "/positions",
+      "viewport": 768,
+      "content": 768
+    },
+    {
+      "width": 768,
+      "path": "/sell",
+      "viewport": 768,
+      "content": 768
+    },
+    {
+      "width": 768,
+      "path": "/activity",
+      "viewport": 768,
+      "content": 768
+    },
+    {
+      "width": 768,
+      "path": "/sources",
+      "viewport": 768,
+      "content": 768
+    },
+    {
+      "width": 768,
+      "path": "/position/4",
+      "viewport": 768,
+      "content": 768
+    },
+    {
+      "width": 390,
+      "path": "/",
+      "viewport": 390,
+      "content": 390
+    },
+    {
+      "width": 390,
+      "path": "/marketplace",
+      "viewport": 390,
+      "content": 390
+    },
+    {
+      "width": 390,
+      "path": "/positions",
+      "viewport": 390,
+      "content": 390
+    },
+    {
+      "width": 390,
+      "path": "/sell",
+      "viewport": 390,
+      "content": 390
+    },
+    {
+      "width": 390,
+      "path": "/activity",
+      "viewport": 390,
+      "content": 390
+    },
+    {
+      "width": 390,
+      "path": "/sources",
+      "viewport": 390,
+      "content": 390
+    },
+    {
+      "width": 390,
+      "path": "/position/4",
+      "viewport": 390,
+      "content": 390
+    },
+    {
+      "width": 320,
+      "path": "/",
+      "viewport": 320,
+      "content": 320
+    },
+    {
+      "width": 320,
+      "path": "/marketplace",
+      "viewport": 320,
+      "content": 320
+    },
+    {
+      "width": 320,
+      "path": "/positions",
+      "viewport": 320,
+      "content": 320
+    },
+    {
+      "width": 320,
+      "path": "/sell",
+      "viewport": 320,
+      "content": 320
+    },
+    {
+      "width": 320,
+      "path": "/activity",
+      "viewport": 320,
+      "content": 320
+    },
+    {
+      "width": 320,
+      "path": "/sources",
+      "viewport": 320,
+      "content": 320
+    },
+    {
+      "width": 320,
+      "path": "/position/4",
+      "viewport": 320,
+      "content": 320
+    }
+  ],
+  "status": "PASS",
+  "executedAt": "2026-11-13T17:51:04.187Z",
+  "contractBuild": {
+    "builtAt": "2026-11-13T16:34:59.404Z",
+    "toolchain": "rustc 1.99.1 (58cf8f9c3 2026-10-13); Wasm MVP; build-std=std,panic_abort",
+    "contracts": {
+      "lockpad_marketplace.wasm": {
+        "bytes": 577605,
+        "sha256": "bfd986977195a2ece79a6d34004b48e2dc990a49bd6493d2b8f862b6a0f02dd6"
+      },
+      "lockpad_reference_vault.wasm": {
+        "bytes": 671404,
+        "sha256": "ff225eebcea17861cadb8ac302f1fff5b920eaf1c608bbf17c383ed45d0f6637"
+      },
+      "lockpad_test_token.wasm": {
+        "bytes": 309681,
+        "sha256": "44fd1b7d6df313f902c0592d0ec8c883009b865ae44069198da2c574ec4b71a2"
+      }
+    },
+    "sources": {
+      "Cargo.toml": "91ed9dd0f352d40b5b865dcb652f297acdddbb820bffb2da2f8b9d7717bd787e",
+      "Cargo.lock": "f3f08f42a9644ac6c3bf4e15804c106afc5469eb11d75b87c5762fb7ccc65022",
+      "rust-toolchain.toml": "e39008d2583f8860a4cbebefb0e8703ac6c8ab3384fb585b16dc802084bd2b1f",
+      ".cargo/config.toml": "cfcd2dbebb7de4af0de6c27156fb474531407206a4f4856743d211675fccbc5d",
+      "contract/Cargo.toml": "721b5c7e41e6422e7607195271fc521e785a717478a5f464855bde7b1f7c3e5d",
+      "contract/src/lib.rs": "f0ed0cc923a6b8d3f41620e59dac7e86552548d4e391c28e4ebab8eff1f8658c",
+      "marketplace/Cargo.toml": "424c96e2429f2def9bd9ac49cf1062764d929ca3b5723053405632e18c05bff5",
+      "marketplace/src/lib.rs": "ac8b6820b8c13218ec97aa7da0061d838ca880204b3b5c56e9d37b58401af921",
+      "token/Cargo.toml": "f95cd7fc8c3b531c07f91f6a9e95b22bbc0807424d30c0786061bf6619e6e9ed",
+      "token/src/lib.rs": "488b0ef78a138e88aaea15fc264d8a137ea3a61e7539c8b9c40f860afa721c2b"
+    }
+  },
+  "sources": {
+    "src/app.jsx": "78c8ace2865ec8febabc05b3c1497a4880f32e2b40b87d8a0ba95f419301716c",
+    "src/style.css": "d595aef9d164b5e4ad1ed5242cfa5b0a5607c30dcd6b324fb1389276c68957ed",
+    "src/components/interface.jsx": "ee97a707fe179c18687801c629c4596d4a886fdd4dd07a9ecb26451b53aded52",
+    "src/hooks/use-lockpad.js": "a9c04d451b7979e786bdb2f15788e8465bf5c864c9aa5cf5ffb56a10338e6977",
+    "src/lib/chain.mjs": "826e79fd3888648f6a453588c74225e493332a7a0a804cda84a328fb29157317",
+    "src/lib/amounts.mjs": "f183e54bf1cd80b0f489ab13f321a9669f0265f4594537c32c8b6e6b4a78c7bb",
+    "src/lib/market.mjs": "1904fc9482088b80d807189f94bd8990ac720a36aec2e4e499861ee32ae9dda8",
+    "scripts/demo-server.mjs": "a6e2bfec8be0f46df2f98506c4b89bb04954f37f05e39feeb1e2937ae9a1d2d6",
+    "scripts/sandbox.mjs": "d00d5742de0b2c078087ac7b67474846f8b9126f23813b35df2a158a7c734970",
+    "scripts/browser-test.mjs": "df22c1dd5888e36817bd3f5ab330b2ea90cefe3c122b2b5b7364c1d096f487ef",
+    "vite.config.js": "3fd08903abb97dce894ca9bc15b963d353768f0655ae5c567a12c55bf98ad213",
+    "index.html": "e2a9cf6bb74a5d2a7436a9c0eed6cfaa822de294fd20fa5fa35aefef22091bde"
+  }
+}

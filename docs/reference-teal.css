@@ -1,0 +1,26 @@
+:root{--muted-teal:#8ab0ab;--charcoal-blue:#3e505b;--dark-slate-grey:#26413c;--carbon-black:#1a1d1a;--onyx:#03120e}
+body{background:var(--onyx);color:var(--muted-teal)}
+.top p,.copy,.foot,.palette{color:var(--muted-teal)}
+.label b{background:var(--dark-slate-grey);color:var(--muted-teal);border:1px solid #8ab0ab40}
+.site{background:var(--carbon-black);border:1px solid #8ab0ab20;box-shadow:0 25px 60px #03120e}
+.logo,.nav{color:var(--muted-teal)}.logo i{background:var(--muted-teal)}.logo i:before{border-color:var(--muted-teal)}
+.pill{border-color:#8ab0ab50;color:var(--muted-teal)}
+.hero{color:var(--muted-teal);background:var(--onyx);border:1px solid #8ab0ab15}
+.center{background-image:radial-gradient(#8ab0ab30 .6px,transparent .6px)}
+.center h2 span{color:var(--muted-teal);opacity:.8}
+.description{color:var(--muted-teal)}
+.button{background:var(--muted-teal);color:var(--onyx)}
+.float{background:var(--dark-slate-grey);border-color:#8ab0ab30;color:var(--muted-teal);box-shadow:0 13px 30px #03120e80}
+.float small,.f-calendar .day{color:var(--muted-teal)}
+.f-lock{background:var(--muted-teal);color:var(--onyx)}.f-lock small{color:var(--onyx)}
+.source-chip{border-color:#03120e30}.source-chip:before{background:var(--onyx)}
+.f-symbol{background:linear-gradient(130deg,var(--muted-teal),var(--charcoal-blue));box-shadow:10px 17px 26px #03120e80}
+.f-symbol i{background:var(--onyx)}.f-symbol i:before{border-color:var(--onyx)}
+.split{background:linear-gradient(150deg,var(--charcoal-blue),var(--onyx))}
+.split h2 span{color:var(--muted-teal)}.split .description{border-color:#8ab0ab40}
+.product-visual{background:var(--dark-slate-grey);box-shadow:inset 0 1px 1px #8ab0ab70,inset 0 -20px 40px #03120e50}
+.shackle{border-color:var(--muted-teal);box-shadow:inset 4px 4px 4px #03120e70,3px 3px 2px #03120e70}
+.lock-body{background:linear-gradient(120deg,var(--muted-teal),var(--charcoal-blue));box-shadow:14px 26px 28px #03120e80,inset 1px 2px 1px #8ab0ab}
+.keyhole,.keyhole:after{background:var(--onyx)}
+.v-bottom{background:#26413ccc}.v-payout{background:var(--onyx);color:var(--muted-teal)}.v-payout small{color:var(--muted-teal)}
+.trust,.trust strong{color:var(--muted-teal)}.swatch i{border-color:#8ab0ab30}

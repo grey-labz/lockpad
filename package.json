@@ -1,27 +1,46 @@
 {
-  "name": "timeshift",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "lockpad",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "description": "A NEAR marketplace for transferable, time-locked DeFi payout rights.",
+  "engines": { "node": ">=22.12.0" },
   "scripts": {
-    "test": "node scripts/smoke.mjs",
-    "dev": "vite",
+    "dev": "node scripts/demo-server.mjs",
+    "demo": "node scripts/demo-server.mjs",
+    "dev:testnet": "vite --host 127.0.0.1",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview --host 127.0.0.1",
+    "contracts:build": "node scripts/build-contracts.mjs",
+    "test": "node scripts/unit-tests.mjs",
+    "test:contracts": "node scripts/contract-tests.mjs",
+    "test:e2e": "node scripts/browser-test.mjs",
+    "test:release": "node scripts/release-tests.mjs",
+    "release:plan": "node scripts/deploy.mjs",
+    "release:preflight": "node scripts/deploy.mjs --preflight",
+    "release:deploy": "node scripts/deploy.mjs",
+    "release:account": "node scripts/create-release-account.mjs",
+    "release:verify": "node scripts/verify-testnet.mjs",
+    "release:trade": "node scripts/testnet-demo.mjs",
+    "release:build": "node scripts/build-testnet.mjs",
+    "release:bundle": "node scripts/package-release.mjs",
+    "verify": "npm test && npm run contracts:build && npm run test:contracts && npm run test:release && npm run build && npm run test:e2e"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "@hot-labs/near-connect": "^0.12.0",
-    "motion": "^14.13.0",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
-    "three": "^0.187.0",
     "vite": "^8.3.8"
   },
   "devDependencies": {
     "near-api-js": "^5.1.1",
-    "near-workspaces": "^5.0.0"
+    "near-workspaces": "^5.0.0",
+    "playwright": "^1.65.0"
+  },
+  "overrides": {
+    "tar": "^7.5.23"
   }
 }

@@ -77,7 +77,7 @@ impl FungibleTokenMetadataProvider for DemoToken {
     fn ft_metadata(&self) -> FungibleTokenMetadata {
         FungibleTokenMetadata {
             spec: FT_METADATA_SPEC.into(),
-            name: "Timeshift Test Dollar".into(),
+            name: "Lockpad Test Dollar (no monetary value)".into(),
             symbol: "TUSD".into(),
             icon: None,
             reference: None,

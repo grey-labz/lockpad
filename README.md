@@ -1,37 +1,24 @@
-# Lockpad · NEAR DeFi Resale
+# Lockpad
 
-[Open Lockpad](https://greyw0rks.github.io/timeshift/)
+Your funds are locked. Your options aren't.
 
-Lockpad is a secondary marketplace for existing positions issued by other NEAR DeFi protocols. The public app shows position eligibility and currently has no verified external listings or enabled trade flow.
+Lockpad lets an owner sell a fixed-maturity payout right before its lock expires. A buyer pays less than the principal and claims the original payout at the original date. Selling a 1,000-token payout for 920 gives the seller an early exit and the buyer an 8% discount; the buyer's gross difference is 80 tokens, or 8.70% of the purchase price, before gas and storage.
 
-Shardpad documents creator fee reassignment. That right is separate from locked principal. The Rhea position NFT can move when its owner authorizes the transfer, subject to the rules of any locker that holds it. The first integration must verify the specific payout right, seller authority, transfer finality, and payment recovery on failure.
+The working local prototype uses three actual NEAR contracts: a separate reference vault, a payout-right marketplace, and a clearly labelled test token. Principal stays in its vault. The market escrows its NFT, delivers it to the buyer, and releases withdrawable seller proceeds after delivery. Unused buyer funding can be withdrawn.
 
-Run the public app with Node 22.12 or newer and `npm ci && npm run dev`.
-
-The repository retains the original self-issued lock vault and its scripts as a testnet settlement prototype. Its testnet receipts demonstrate purchase and redemption of that vault's own claim.
-
-## Rebuild and test
-
-Use Rust 1.99.1 with `rust-src` and the Wasm target. Building the standard library for the Wasm MVP target avoids instructions that the NEAR runtime does not accept.
+Run with Node 22.12 or newer:
 
 ```sh
-rustup target add wasm32-unknown-unknown
-rustup component add rust-src
-RUSTC_BOOTSTRAP=1 cargo build -Z build-std=std,panic_abort --locked --release --target wasm32-unknown-unknown
+npm ci --ignore-scripts
+npm run demo
 ```
 
-Use near-sandbox 2.14.1. On Linux x86-64:
+Open `http://127.0.0.1:5273`. The local NEAR Sandbox creates temporary test wallets and real local positions. No public-network transactions or valuable tokens are used.
 
-```sh
-mkdir -p target/sandbox
-curl -fsSL https://s3-us-west-1.amazonaws.com/build.nearprotocol.com/nearcore/Linux-x86_64/2.14.1/near-sandbox.tar.gz | tar -xz -C target/sandbox
-NEAR_SANDBOX_BIN_PATH=1 NEAR_SANDBOX_BINARY_PATH="$PWD/target/sandbox/Linux-x86_64" npm test
-```
+[Setup and judge guide](docs/SETUP.md) · [Contract architecture](docs/ARCHITECTURE.md) · [Release plan](docs/RELEASE.md)
 
-For a fresh testnet deployment, set `TIMESHIFT_TESTNET_KEYS` to an absolute private directory outside the repository. Run `node scripts/deploy.mjs <unused-token.testnet> <unused-vault.testnet>`. The script creates and funds the accounts with the testnet helper, deploys the Wasm, initializes each account, and registers the vault with the token. An automated public-network run is also available in `scripts/testnet-demo.mjs`; pass the token, vault, seller and buyer account IDs in that order. Separate funded testnet signer accounts can be created with `scripts/create-testnet-account.mjs`.
+Only the reference vault is integrated. Rhea and other third-party DeFi locks require a verified source adapter. This is an unaudited prototype with retained upgrade keys and documented callback recovery limits.
 
-## Hackathon scope
+The [earlier public release](https://greyw0rks.github.io/timeshift/) and [public repository](https://github.com/greyw0rks/timeshift) predate this local implementation. The new three-contract marketplace has not been published or deployed to public testnet.
 
-Discounted fixed-maturity instruments are established. Lockpad's narrower product idea is making a user's own fixed-term savings lock transferable, then demonstrating an early exit and maturity payout through one market. Savings discipline supplies a reason to lock. Without buyer demand, the owner waits to maturity.
-
-The MVP supports one asset, fixed prices, and 1-minute, 7-day, 30-day and 90-day lock terms. The deployed accounts retain upgrade keys. The contracts are testnet prototypes and have not been audited. Before handling value, review upgrade control, callback failure recovery beyond ordinary FT transfer failures, storage pricing and the economics of listing liquidity.
+The NEAR HACKATHON work is on `hackathon/lockpad-resale`, starting from [baseline cb4097c](https://github.com/greyw0rks/timeshift/commit/cb4097c1249052d2f8940d9c88969b99023e98c1). It adds separate-source custody, NFT settlement, recoverable funding and a new marketplace UI; the [release guide](docs/RELEASE.md) identifies the review diff. It uses React, Vite, NEAR SDK and contract standards, NEAR Connect and near-api-js, with Sandbox, near-workspaces and Playwright for verification. [Greed Machine](https://github.com/greyw0rks/greed-machine) is a separate project by the same builder.

@@ -1,0 +1,35 @@
+{
+  "network": "testnet",
+  "inspectedAt": "2026-11-13T17:50:19.229Z",
+  "block": {
+    "hash": "9D7WuEDPZUkSRJkFEd7QqyeoGR7jm5H3mCcafK58Msv6",
+    "height": 277542902,
+    "timestamp": "1794592217481566079"
+  },
+  "targets": [
+    {
+      "role": "token",
+      "accountId": "lockpad-tusd-261113.testnet",
+      "state": null,
+      "expectedCodeHash": "5eJaEEgTq9zFDQWpGfZyuSDChQ5tbPoUccvGYR4TjVAR",
+      "minimumFreshBalanceYocto": "4096810000000000000000000",
+      "status": "missing"
+    },
+    {
+      "role": "vault",
+      "accountId": "lockpad-vault-261113.testnet",
+      "state": null,
+      "expectedCodeHash": "JAwMv9Vc2iDwp5RTRbvNwp8kdshkEoM6PJeGJKuNcJM4",
+      "minimumFreshBalanceYocto": "7714040000000000000000000",
+      "status": "missing"
+    },
+    {
+      "role": "market",
+      "accountId": "lockpad-market-261113.testnet",
+      "state": null,
+      "expectedCodeHash": "DuuFZrnYGg2BVVYs2NPKw3bZoJFDHykdTXkb2yVuu1eM",
+      "minimumFreshBalanceYocto": "6776050000000000000000000",
+      "status": "missing"
+    }
+  ]
+}

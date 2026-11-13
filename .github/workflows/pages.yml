@@ -22,8 +22,16 @@ jobs:
         with:
           node-version: 22
           cache: npm
-      - run: npm ci
-      - run: npm run build
+      - run: npm ci --ignore-scripts
+      - run: npm test
+      - name: Verify deployed contracts and build testnet app
+        run: npm run release:build
+        env:
+          VITE_NETWORK: testnet
+          VITE_TOKEN_ACCOUNT: ${{ vars.VITE_TOKEN_ACCOUNT }}
+          VITE_VAULT_ACCOUNT: ${{ vars.VITE_VAULT_ACCOUNT }}
+          VITE_MARKET_ACCOUNT: ${{ vars.VITE_MARKET_ACCOUNT }}
+          VITE_NEAR_RPC: ${{ vars.VITE_NEAR_RPC }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

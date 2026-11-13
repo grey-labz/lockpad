@@ -1,0 +1,35 @@
+# Lockpad handoff — 13 November 2026
+
+The approved local MVP and its three-contract release tooling are implemented in `/home/greyw0rks/Lockpad`, branch `hackathon/lockpad-resale`, baseline `cb4097c`. The candidate is local and unpublished. Remote `main` was rechecked and remains `cb4097c1249052d2f8940d9c88969b99023e98c1`; the earlier public GitHub Pages app is a prior version.
+
+## Working app
+
+Local demo: **http://127.0.0.1:5273/**. Start or restart with `npm run demo`; stop with Ctrl+C. The local server deploys actual Wasm, creates temporary builder-controlled wallets, and seeds reference positions. A new run has a new wallet/journal scope. Short seed positions can mature while the server stays running; the faucet and Create test position flow provide new ones.
+
+The centered hero and floating cards use the approved muted teal, charcoal blue, dark slate, carbon and onyx palette. The connected app includes market search/maturity/discount/sort, source-checked payout details and maturity timeline, position import/listing, local wallet selection or separate testnet NEAR Connect mode, purchase review, sale proceeds and unused-funding withdrawals, maturity claims, source eligibility, and receipt history. Keyboard focus wraps inside dialogs; Escape restores the trigger; mobile navigation and reduced motion are supported.
+
+Principal remains in a separate reference vault. Its payout NFT enters the marketplace and reaches the buyer before seller proceeds become withdrawable. Reference positions retain their principal and original maturity. Buyer funding and purchase are separate, with unused funding recoverable. Wallet changes stop subsequent signing steps; old-account reads are not shown as another wallet's balances. Receipt checks and reloads do not replay transactions.
+
+## Verification
+
+- **35 unit checks passed:** integer amounts and bounds, display percentages, precise market filters and sorting, source/owner eligibility, unknown/failed receipts, returned funding, reviewed deployment plans and receipt/payout matching.
+- **19 contract behaviors passed against the rebuilt Wasm:** separate principal custody, authority, discounted listing intake, stale/self/double purchase rejection, preserved maturity, seller withdrawals, ordinary failed payout recovery, owner-only maturity claim, no double claim, cancellation, unused funding recovery and settled-state accounting.
+- **15 browser behaviors passed:** actual Alice listing → Bob purchase → Alice withdrawal → Bob original payout, a real cancellation race after funding, recovery without replay, native receipts, seven routes at 1440/768/390/320 pixels, mobile navigation, reduced motion, and the production build below `/timeshift/`.
+- **11 release behaviors passed against actual local Wasm:** exact three-contract deployment and initializers, both token registrations, a lost response after the first actual broadcast, no signing while a receipt is unavailable, resume with exactly five deployment/registration signatures, no further broadcast on a completed rerun, refusal to overwrite an unjournaled contract, and read-only verification of the complete 920/1,000 TUSD trade. Final receipts precede the single source snapshot so an in-flight redemption callback cannot be mistaken for a completed payout.
+- Production build and final Git whitespace check passed. Rust 1.99.1, `rust-src`, the Wasm target, compiler configuration and contract source/artifact hashes are pinned or recorded.
+
+Browser maturity uses local Sandbox `fastForward(600)` without editing the source maturity. The separate contract suite exercises a real one-minute maturity. All actors are temporary builder fixtures. No public testnet wallet acceptance or independent adoption is claimed.
+
+Evidence: [build manifest](evidence/contract-build.json), [contract execution](evidence/contract-tests.json), [unit checks](evidence/unit-tests.json), [browser checks](evidence/browser-tests.json), [browser receipts](evidence/browser-receipts.json), [release rehearsal](evidence/release-tests.json), and [final verification](evidence/verification.json). Screenshots are in `docs/screenshots/`. The fresh browser report covers the current frontend hashes; the earlier 19-contract-behavior report remains valid against unchanged, hash-checked contract source and Wasm.
+
+## Next release work
+
+The saved implementation plan and organizer instructions reserve separate confirmation for publication, public-network transactions and submission. Those actions have not occurred. The [release guide](RELEASE.md) and [reviewed plan](evidence/release-plan.json) make the next approval concrete: create `lockpad-tusd-261113.testnet`, `lockpad-vault-261113.testnet`, and `lockpad-market-261113.testnet`; deploy their exact reviewed Wasm and initializers; make both token registrations; then publish this source and matching Pages app. The recorded [testnet preflight](evidence/testnet-preflight.json) found all three accounts absent at final block 277542902. Total fresh-account funding reserve is 18.58690 test NEAR, available from the free testnet faucet; no mainnet action is planned.
+
+`scripts/deploy.mjs` now prepares the plan offline and deploys all three contracts only with a reviewed plan and `--execute`. It records each hash before broadcast and reconciles recorded receipts before later signing. `scripts/testnet-demo.mjs` now only verifies a completed trade; it cannot sign or repeat it. `npm run release:build` and the Pages workflow verify the actual deployed hashes, source/token configuration and both registrations before building. Set the four public repository variables named in the release guide after deployment. Actual human-operated testnet wallet acceptance, a working demo upload and exact-payload submission confirmation remain separate next steps.
+
+`npm run release:bundle -- .release/lockpad-20261113/plan.json` prepares source and configured site ZIPs with file/archive hashes under `.release/lockpad-20261113/`. Packaging refuses failed or stale evidence and fills the final verification file. This package is unpublished and its static preview does not prove a public deployment. Private keys are never included.
+
+Only the reference adapter is integrated. Rhea/Shardpad/other DeFi sources, AI and NEAR Intents are not claimed. Contracts retain upgrade keys and are unaudited. Ordinary token-transfer failure restores balances, but arbitrary withdrawal/redemption callback failure remains a documented pending-operation limitation. The app currently reads up to 100 records per view.
+
+The live organizer rules were independently rechecked on 13 November and saved in [the rules snapshot](evidence/hackathon-rules-2026-11-13.md). Development and submission end 14 November 2026 at 23:59 UTC, or 15 November at 00:59 Lagos time. One person may submit at most two independent projects; confirm existing entries before submitting Lockpad. Greed Machine is disclosed in the README as a separate project. No submission was sent by this continuation.

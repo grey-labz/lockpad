@@ -1,0 +1,96 @@
+{
+  "schema": "lockpad-release-v1",
+  "network": "testnet",
+  "rpc": "https://test.rpc.fastnear.com",
+  "accounts": {
+    "token": "lockpad-tusd-261113.testnet",
+    "vault": "lockpad-vault-261113.testnet",
+    "market": "lockpad-market-261113.testnet"
+  },
+  "contracts": [
+    {
+      "role": "token",
+      "accountId": "lockpad-tusd-261113.testnet",
+      "file": "lockpad_test_token.wasm",
+      "bytes": 309681,
+      "sha256": "44fd1b7d6df313f902c0592d0ec8c883009b865ae44069198da2c574ec4b71a2",
+      "codeHash": "5eJaEEgTq9zFDQWpGfZyuSDChQ5tbPoUccvGYR4TjVAR",
+      "initializer": {},
+      "gas": "100000000000000",
+      "depositYocto": "0",
+      "minimumFreshBalanceYocto": "4096810000000000000000000"
+    },
+    {
+      "role": "vault",
+      "accountId": "lockpad-vault-261113.testnet",
+      "file": "lockpad_reference_vault.wasm",
+      "bytes": 671404,
+      "sha256": "ff225eebcea17861cadb8ac302f1fff5b920eaf1c608bbf17c383ed45d0f6637",
+      "codeHash": "JAwMv9Vc2iDwp5RTRbvNwp8kdshkEoM6PJeGJKuNcJM4",
+      "initializer": {
+        "asset_id": "lockpad-tusd-261113.testnet"
+      },
+      "gas": "100000000000000",
+      "depositYocto": "0",
+      "minimumFreshBalanceYocto": "7714040000000000000000000"
+    },
+    {
+      "role": "market",
+      "accountId": "lockpad-market-261113.testnet",
+      "file": "lockpad_marketplace.wasm",
+      "bytes": 577605,
+      "sha256": "bfd986977195a2ece79a6d34004b48e2dc990a49bd6493d2b8f862b6a0f02dd6",
+      "codeHash": "DuuFZrnYGg2BVVYs2NPKw3bZoJFDHykdTXkb2yVuu1eM",
+      "initializer": {
+        "asset_id": "lockpad-tusd-261113.testnet",
+        "source_ids": [
+          "lockpad-vault-261113.testnet"
+        ]
+      },
+      "gas": "100000000000000",
+      "depositYocto": "0",
+      "minimumFreshBalanceYocto": "6776050000000000000000000"
+    }
+  ],
+  "registrations": [
+    {
+      "signerId": "lockpad-vault-261113.testnet",
+      "receiverId": "lockpad-tusd-261113.testnet",
+      "methodName": "storage_deposit",
+      "args": {
+        "account_id": "lockpad-vault-261113.testnet",
+        "registration_only": true
+      },
+      "maximumDepositYocto": "30000000000000000000000",
+      "gas": "100000000000000"
+    },
+    {
+      "signerId": "lockpad-market-261113.testnet",
+      "receiverId": "lockpad-tusd-261113.testnet",
+      "methodName": "storage_deposit",
+      "args": {
+        "account_id": "lockpad-market-261113.testnet",
+        "registration_only": true
+      },
+      "maximumDepositYocto": "30000000000000000000000",
+      "gas": "100000000000000"
+    }
+  ],
+  "frontend": {
+    "VITE_NETWORK": "testnet",
+    "VITE_TOKEN_ACCOUNT": "lockpad-tusd-261113.testnet",
+    "VITE_VAULT_ACCOUNT": "lockpad-vault-261113.testnet",
+    "VITE_MARKET_ACCOUNT": "lockpad-market-261113.testnet",
+    "VITE_NEAR_RPC": "https://test.rpc.fastnear.com"
+  },
+  "balanceEstimate": "Wasm bytes at 0.00001 NEAR/byte plus 1 test NEAR per account for state, registration and gas. This is a funding reserve, not a fixed fee.",
+  "limitations": [
+    "Reference source only",
+    "Zero-value test token",
+    "Retained upgrade keys",
+    "Unaudited contracts",
+    "Withdrawal/redemption callback recovery limits"
+  ],
+  "id": "6bbdd731046243502e4f5c831640215759fa61fa754db96724d49685058ff248",
+  "createdAt": "2026-11-13T17:47:30.946Z"
+}

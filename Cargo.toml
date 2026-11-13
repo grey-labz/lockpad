@@ -1,10 +1,10 @@
 [workspace]
-members = ["contract", "token"]
+members = ["contract", "token", "marketplace"]
 resolver = "2"
 
 [workspace.dependencies]
-near-sdk = "5.28"
-near-contract-standards = "5.28"
+near-sdk = "=5.28.0"
+near-contract-standards = "=5.28.0"
 
 [profile.release]
 opt-level = "z"
