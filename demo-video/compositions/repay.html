@@ -1,0 +1,31 @@
+<template>
+  <style>
+    @font-face{font-family:Manrope;src:url('assets/fonts/manrope-regular.ttf') format('truetype');font-weight:400;font-display:block}@font-face{font-family:Manrope;src:url('assets/fonts/manrope-bold.ttf') format('truetype');font-weight:700;font-display:block}
+    #root{position:absolute;inset:0;font-family:Manrope;color:var(--headerInk,#edf6ef)}
+    .scene-ground{position:absolute;inset:0;background:var(--canvasGround,#020202)}
+    .chapter{position:absolute;left:192px;top:108px;width:1536px;height:130px}
+    .chapter-copy{position:absolute;left:0;top:0;width:1536px}
+    .chapter h1{font-size:64px;line-height:1.08;font-weight:700;letter-spacing:-.035em;white-space:nowrap;margin:0}
+    .chapter-baseline{position:absolute;left:0;bottom:-7px;width:120px;height:2px;background:var(--accent,#16db65);transform-origin:0 50%}
+    .disclosure{position:absolute;left:0;top:74px;text-align:left;width:1536px;font-size:54px;line-height:1.08;font-weight:700;letter-spacing:0;white-space:nowrap;color:#a0b6a6}
+    .app-screen{position:absolute;left:272px;top:252px;width:1376px;height:774px;object-fit:contain;border:1px solid #04471c}
+    .proof-note{position:absolute;left:304px;top:924px;padding:15px 22px;max-width:1312px;border:1px solid #058c42;background:#0d2818;color:#edf6ef;font-size:54px;line-height:1.15;font-weight:700;white-space:nowrap}
+  </style>
+  <div id="root" data-composition-id="repay" data-width="1920" data-height="1080">
+    <div class="scene-ground"></div>
+    <div id="repay-chapter" class="clip" data-start="0" data-duration="11" data-track-index="2" data-hold="Narration-led chapter text">
+      <div class="chapter">
+        <div class="chapter-copy"><h1 id="repay-title" data-var-text="repayTitle">Repay 663 TUSD. Recover the same NFT.</h1><div id="repay-baseline" class="chapter-baseline"></div></div>
+        <div class="disclosure" data-var-text="demoDisclosure">LOCAL NEAR SANDBOX · ZERO-VALUE TUSD</div>
+      </div>
+    </div>
+    <video id="repay-footage" class="clip app-screen" data-start="0" data-duration="11" data-track-index="1" data-media-start="0" data-playback-rate="1.0242424242424244" src="assets/video-borrow/repay.mp4" data-var-src="repayFootage" muted playsinline preload="auto"></video>
+    
+  </div>
+  <script>
+    const tl=gsap.timeline({paused:true});
+    // Adapted from the registry lt-kicker-name drawn baseline; the readable title holds.
+    tl.fromTo('#repay-baseline',{scaleX:0},{scaleX:1,duration:0.35,ease:'power4.out'},0);
+    window.__timelines['repay']=tl;
+  </script>
+</template>

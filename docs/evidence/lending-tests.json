@@ -1,0 +1,623 @@
+{
+  "status": "PASS",
+  "checkedAt": "2026-11-13T21:29:56.438Z",
+  "network": "isolated local NEAR Sandbox",
+  "checks": [
+    "The lending pool starts with actual funded test tokens",
+    "An unauthorized funding message returns the whole transfer",
+    "A forged token callback cannot create liquidity",
+    "A 1000 TUSD source payout offers 650 with 663 due",
+    "A stale borrowing quote returns the original payout NFT",
+    "Borrowing above the collateral limit is rejected",
+    "Accepted collateral reserves funded liquidity without moving principal",
+    "Only the collateral borrower can draw the reserved loan",
+    "The borrower receives the actual 650 TUSD payment",
+    "A loan cannot disburse a second time",
+    "Pledged collateral cannot also be listed for sale",
+    "A partial repayment is returned without closing the loan",
+    "Another account cannot repay and claim the collateral",
+    "Repayment records exactly the loan and its one-time fee",
+    "A repaid loan cannot take another repayment",
+    "Repayment returns the same payout NFT with its original maturity",
+    "The pool cannot claim collateral before its original maturity",
+    "A matured loan returns a late repayment for settlement review",
+    "An unpaid loan receives its full actual source payout at maturity",
+    "The pool keeps 663 and credits the remaining 337 to the borrower",
+    "Maturity settlement cannot run twice",
+    "The borrower receives the actual 337 TUSD remaining payout",
+    "A withdrawn collateral surplus cannot be withdrawn again",
+    "An undrawn loan returns collateral and releases reserved liquidity",
+    "A failed token payout preserves undrawn collateral and reserved funds",
+    "Completed loan accounting remains solvent with no reserved or pending funds"
+  ],
+  "accounting": {
+    "available_liquidity": "1026000000",
+    "reserved_loans": "0",
+    "outstanding_principal": "0",
+    "borrower_surplus": "0",
+    "pending_withdrawals": "0",
+    "total_borrowed": "1300000000",
+    "total_repaid": "663000000",
+    "total_settled": "663000000",
+    "fees_received": "26000000"
+  },
+  "contracts": {
+    "source": "vault.test.near",
+    "pool": "pool.test.near",
+    "token": "token.test.near"
+  },
+  "original": {
+    "adapter_version": "lockpad-reference-v1",
+    "token_id": "1",
+    "owner_id": "alice.test.near",
+    "asset_id": "token.test.near",
+    "principal": "1000000000",
+    "created_at": "1794605275849745148",
+    "unlock_at": "1794605575849745148",
+    "status": "Active",
+    "transfer_pending": false
+  },
+  "repaidPosition": {
+    "adapter_version": "lockpad-reference-v1",
+    "token_id": "1",
+    "owner_id": "alice.test.near",
+    "asset_id": "token.test.near",
+    "principal": "1000000000",
+    "created_at": "1794605275849745148",
+    "unlock_at": "1794605575849745148",
+    "status": "Active",
+    "transfer_pending": false
+  },
+  "receipts": [
+    {
+      "hash": "DtNfHGMpFUXd2fHKTbVKhz9Q3E5bPkSN83LVZbvtfreW",
+      "signer": "vault.test.near",
+      "receiver": "token.test.near",
+      "status": {
+        "SuccessValue": "eyJ0b3RhbCI6IjEyNTAwMDAwMDAwMDAwMDAwMDAwMDAiLCJhdmFpbGFibGUiOiIwIn0="
+      }
+    },
+    {
+      "hash": "HWVDkrP4U9Dh8dtxy9jfBe8PM7V2ekjZw4491pndqHu6",
+      "signer": "market.test.near",
+      "receiver": "token.test.near",
+      "status": {
+        "SuccessValue": "eyJ0b3RhbCI6IjEyNTAwMDAwMDAwMDAwMDAwMDAwMDAiLCJhdmFpbGFibGUiOiIwIn0="
+      }
+    },
+    {
+      "hash": "BdnTchp99wGFXXXQD8Le1mCmkSnQDMW9UCpoANqNcD3K",
+      "signer": "pool.test.near",
+      "receiver": "token.test.near",
+      "status": {
+        "SuccessValue": "eyJ0b3RhbCI6IjEyNTAwMDAwMDAwMDAwMDAwMDAwMDAiLCJhdmFpbGFibGUiOiIwIn0="
+      }
+    },
+    {
+      "hash": "881TQhxr6GGgJ7PbHP4uLmUPLdGYoQd4zx2J8EapdZUj",
+      "signer": "alice.test.near",
+      "receiver": "token.test.near",
+      "status": {
+        "SuccessValue": "eyJ0b3RhbCI6IjEyNTAwMDAwMDAwMDAwMDAwMDAwMDAiLCJhdmFpbGFibGUiOiIwIn0="
+      }
+    },
+    {
+      "hash": "6HjQT4ZC9xKjwqcrNxs2MafsTxieEWNnptY1R9LGUi95",
+      "signer": "alice.test.near",
+      "receiver": "market.test.near",
+      "status": {
+        "SuccessValue": ""
+      }
+    },
+    {
+      "hash": "5NDbGWhvz2LfVem4zHAdnNfdikYK9xfjf5r9VFAqpRB5",
+      "signer": "alice.test.near",
+      "receiver": "pool.test.near",
+      "status": {
+        "SuccessValue": ""
+      }
+    },
+    {
+      "hash": "A9XbS5tXqNimiHXG2jvzm5ZCgxBujRao2CeccVboiyeT",
+      "signer": "alice.test.near",
+      "receiver": "token.test.near",
+      "status": {
+        "SuccessValue": ""
+      }
+    },
+    {
+      "hash": "4asd8MLkZtMYueuwB9fpmErQnrmTZA652TysvurCeA42",
+      "signer": "bob.test.near",
+      "receiver": "token.test.near",
+      "status": {
+        "SuccessValue": "eyJ0b3RhbCI6IjEyNTAwMDAwMDAwMDAwMDAwMDAwMDAiLCJhdmFpbGFibGUiOiIwIn0="
+      }
+    },
+    {
+      "hash": "56cBjGmEUoQ5E6n61d5SevnrZcgYAXvBUmTCh1kP9JNv",
+      "signer": "bob.test.near",
+      "receiver": "market.test.near",
+      "status": {
+        "SuccessValue": ""
+      }
+    },
+    {
+      "hash": "FH6J7W58aHB1UYoMkN7ebHrw22v7T14hJKZj7wAnyfzd",
+      "signer": "bob.test.near",
+      "receiver": "pool.test.near",
+      "status": {
+        "SuccessValue": ""
+      }
+    },
+    {
+      "hash": "AfsjhV7zhVaaw3PSp5FaVUtbTzGtEnu4WjKnLMN4eHN",
+      "signer": "bob.test.near",
+      "receiver": "token.test.near",
+      "status": {
+        "SuccessValue": ""
+      }
+    },
+    {
+      "hash": "Am5MxrvUPETo8r9PMJcGYa2V7EUKpkjqr72H7A2YzjAk",
+      "signer": "nora.test.near",
+      "receiver": "token.test.near",
+      "status": {
+        "SuccessValue": "eyJ0b3RhbCI6IjEyNTAwMDAwMDAwMDAwMDAwMDAwMDAiLCJhdmFpbGFibGUiOiIwIn0="
+      }
+    },
+    {
+      "hash": "8tA2BJwWxp8qoE3QzNPmB6Rz77qCUJuygL7aBJvLZg3Y",
+      "signer": "nora.test.near",
+      "receiver": "market.test.near",
+      "status": {
+        "SuccessValue": ""
+      }
+    },
+    {
+      "hash": "EoyjPt1gSd2WTBQnx6ujMRAC3Lf46bi3ozjkyicJXTa1",
+      "signer": "nora.test.near",
+      "receiver": "pool.test.near",
+      "status": {
+        "SuccessValue": ""
+      }
+    },
+    {
+      "hash": "HRzhuDx2ABaserX1NTN4WmxcgTQezs8Ci1jSsp9iQ2is",
+      "signer": "nora.test.near",
+      "receiver": "token.test.near",
+      "status": {
+        "SuccessValue": ""
+      }
+    },
+    {
+      "hash": "JChYsAvP9ka6PDuQT1mwYiWYq5UeLUhWWNn2ciMP6McJ",
+      "signer": "nora.test.near",
+      "receiver": "token.test.near",
+      "status": {
+        "SuccessValue": ""
+      }
+    },
+    {
+      "hash": "9Vyr2NJkHmu8CLm4BmtTPt8rybwf1jinbR4GGcXoVrxB",
+      "signer": "nora.test.near",
+      "receiver": "token.test.near",
+      "status": {
+        "SuccessValue": "IjEwMDAwMDAwMDAi"
+      }
+    },
+    {
+      "hash": "49RgsxbQ2E1uPUAbJZaaawUcBhRq9ZZ9ZtAbL19kkozk",
+      "signer": "bob.test.near",
+      "receiver": "token.test.near",
+      "status": {
+        "SuccessValue": "IjAi"
+      }
+    },
+    {
+      "hash": "7iCR1TaM4syBbHYjt4fnxpLEu1yn9rGHFUVbjBsbmQpD",
+      "signer": "stranger.test.near",
+      "receiver": "pool.test.near",
+      "status": {
+        "SuccessValue": "Ijk5OTk5OTk5OSI="
+      }
+    },
+    {
+      "hash": "EPgoAkwjk928nib5rRYSL1v88kRbMa7gbXVDksaTTMEe",
+      "signer": "alice.test.near",
+      "receiver": "vault.test.near",
+      "status": {
+        "SuccessValue": ""
+      }
+    },
+    {
+      "hash": "5KGXAdWoNAMBF3ir8eKWHQEPonKa4hEqQcKrukd1i3Ma",
+      "signer": "alice.test.near",
+      "receiver": "token.test.near",
+      "status": {
+        "SuccessValue": "IjEwMDAwMDAwMDAi"
+      }
+    },
+    {
+      "hash": "FkhDUy41X1noSybiWfJDVfEQKpmuuTeRRVwJQQvrBhXX",
+      "signer": "alice.test.near",
+      "receiver": "pool.test.near",
+      "status": {
+        "SuccessValue": ""
+      }
+    },
+    {
+      "hash": "GaV2AM88nzhfyxwd3GVsjJX32rZtv5VP4oJbwZjpQUum",
+      "signer": "alice.test.near",
+      "receiver": "vault.test.near",
+      "status": {
+        "SuccessValue": "ZmFsc2U="
+      }
+    },
+    {
+      "hash": "BydXQd56pgEEoUsGqhryMfcqkioY5KidSAEUFsbLeRwg",
+      "signer": "alice.test.near",
+      "receiver": "vault.test.near",
+      "status": {
+        "SuccessValue": "ZmFsc2U="
+      }
+    },
+    {
+      "hash": "HCsui2w2fuvWv8Nv5UDCoqeFUiaMvGEE3DAGgAbAjnY6",
+      "signer": "alice.test.near",
+      "receiver": "vault.test.near",
+      "status": {
+        "SuccessValue": "dHJ1ZQ=="
+      }
+    },
+    {
+      "hash": "CtjaXQrw2iBviUoXhEr29aVqSGoidK3yX2xgfjka6gL7",
+      "signer": "bob.test.near",
+      "receiver": "pool.test.near",
+      "status": {
+        "Failure": {
+          "ActionError": {
+            "index": 0,
+            "kind": {
+              "FunctionCallError": {
+                "ExecutionError": "WebAssembly trap: An `unreachable` opcode was executed."
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "hash": "ApKjucK3j7mAtsALESV7reyuZgaztUuBPF7DcuB4VodA",
+      "signer": "alice.test.near",
+      "receiver": "pool.test.near",
+      "status": {
+        "SuccessValue": "dHJ1ZQ=="
+      }
+    },
+    {
+      "hash": "EzyUjF9xRXTZmA31Zi8jhXDwV4bCaviaXMrXes113u7e",
+      "signer": "alice.test.near",
+      "receiver": "pool.test.near",
+      "status": {
+        "Failure": {
+          "ActionError": {
+            "index": 0,
+            "kind": {
+              "FunctionCallError": {
+                "ExecutionError": "WebAssembly trap: An `unreachable` opcode was executed."
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "hash": "2FuJvSfAPVrwVaK2eWZyrY4w7DKkpUtuM2Jwq58tQFqY",
+      "signer": "alice.test.near",
+      "receiver": "market.test.near",
+      "status": {
+        "SuccessValue": ""
+      }
+    },
+    {
+      "hash": "4RtqfMfe4Ck175ZuPF4uKFYdRWhfiJbrb6fmqTv8QoZZ",
+      "signer": "alice.test.near",
+      "receiver": "vault.test.near",
+      "status": {
+        "Failure": {
+          "ActionError": {
+            "index": 0,
+            "kind": {
+              "FunctionCallError": {
+                "ExecutionError": "WebAssembly trap: An `unreachable` opcode was executed."
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "hash": "3hFx9JcmPLxGPQvJZdkCXT5Hx9XSqMmKVwwxbDSphbJT",
+      "signer": "bob.test.near",
+      "receiver": "token.test.near",
+      "status": {
+        "SuccessValue": ""
+      }
+    },
+    {
+      "hash": "5jAU7ryAzzpeFFQHzmvdZei6xotvt6LraZFoUezqSEtD",
+      "signer": "alice.test.near",
+      "receiver": "token.test.near",
+      "status": {
+        "SuccessValue": "IjAi"
+      }
+    },
+    {
+      "hash": "5iSQMGxQyueFhjYV9nSSnKxUbkfFt948G5m2HYpkGwNy",
+      "signer": "bob.test.near",
+      "receiver": "token.test.near",
+      "status": {
+        "SuccessValue": "IjAi"
+      }
+    },
+    {
+      "hash": "99ckQTkA2TDHxWLsvCYizTcHm6EqRULbcARQzQWi6qBE",
+      "signer": "alice.test.near",
+      "receiver": "token.test.near",
+      "status": {
+        "SuccessValue": "IjY2MzAwMDAwMCI="
+      }
+    },
+    {
+      "hash": "2Pp9LEDx47B27iX7BMRpHSkn32LK2HU724yCCXPCcDFz",
+      "signer": "alice.test.near",
+      "receiver": "token.test.near",
+      "status": {
+        "SuccessValue": ""
+      }
+    },
+    {
+      "hash": "LrjQjQPEEWbtiasQwLCsquNjPZ4nhv5hz6KXQKH76ba",
+      "signer": "alice.test.near",
+      "receiver": "token.test.near",
+      "status": {
+        "SuccessValue": "IjAi"
+      }
+    },
+    {
+      "hash": "6g9NfR2KZ5iRNQrG36aWW7oqeFrsiQzdrcpg6YAPwDSq",
+      "signer": "alice.test.near",
+      "receiver": "pool.test.near",
+      "status": {
+        "SuccessValue": "dHJ1ZQ=="
+      }
+    },
+    {
+      "hash": "9ZHo1QEafpnAkTZjfiCPzhg8ePXo2oZHLbYjXrcoDJZD",
+      "signer": "alice.test.near",
+      "receiver": "vault.test.near",
+      "status": {
+        "SuccessValue": ""
+      }
+    },
+    {
+      "hash": "Fgvqt9fq56v2GjkGKt3Tuzei3bTz1KGzmARu6nGPDN4",
+      "signer": "alice.test.near",
+      "receiver": "token.test.near",
+      "status": {
+        "SuccessValue": "IjEwMDAwMDAwMDAi"
+      }
+    },
+    {
+      "hash": "ENuM3KbZo1gYyU2oA3VH7SPKLP9KJn8KP8kQs4sBNYCJ",
+      "signer": "alice.test.near",
+      "receiver": "pool.test.near",
+      "status": {
+        "SuccessValue": ""
+      }
+    },
+    {
+      "hash": "BxaaYgpT4pmuq5xA9fUT55kW33q2AHzaYy97Sp3dSLRo",
+      "signer": "alice.test.near",
+      "receiver": "vault.test.near",
+      "status": {
+        "SuccessValue": "dHJ1ZQ=="
+      }
+    },
+    {
+      "hash": "2sFo5wDe25jp3oGm58Qmb5YcnveikeqTDUXdt3imbsNa",
+      "signer": "alice.test.near",
+      "receiver": "pool.test.near",
+      "status": {
+        "SuccessValue": "dHJ1ZQ=="
+      }
+    },
+    {
+      "hash": "33M1HLY3yEBePUazagbsjkgx1aHYsFMHC83K8rDkimKK",
+      "signer": "bob.test.near",
+      "receiver": "token.test.near",
+      "status": {
+        "SuccessValue": ""
+      }
+    },
+    {
+      "hash": "9viiuGaB4xkdfzCK5S7RVdT5uX35vAE7tAxFBrAkKpFu",
+      "signer": "bob.test.near",
+      "receiver": "pool.test.near",
+      "status": {
+        "Failure": {
+          "ActionError": {
+            "index": 0,
+            "kind": {
+              "FunctionCallError": {
+                "ExecutionError": "WebAssembly trap: An `unreachable` opcode was executed."
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "hash": "2Z94qJXE3V7mxqmMmtQG7N9YHDQDgwc9Kj5YDrnpsdYE",
+      "signer": "alice.test.near",
+      "receiver": "token.test.near",
+      "status": {
+        "SuccessValue": "IjAi"
+      }
+    },
+    {
+      "hash": "AnJcKLCCJFLAiXVgeKtwZ4iGHdbEkMuCeRgkUToFjqdx",
+      "signer": "bob.test.near",
+      "receiver": "pool.test.near",
+      "status": {
+        "SuccessValue": "dHJ1ZQ=="
+      }
+    },
+    {
+      "hash": "AjLLHTjiAohvPSrda1GBBRHRtScQQEt1LYMW85dJ6Zsh",
+      "signer": "alice.test.near",
+      "receiver": "pool.test.near",
+      "status": {
+        "Failure": {
+          "ActionError": {
+            "index": 0,
+            "kind": {
+              "FunctionCallError": {
+                "ExecutionError": "WebAssembly trap: An `unreachable` opcode was executed."
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "hash": "GGm6aYRPBMf2coGJ7Tssm2rukgX3QcY5JrswwkKuYyD3",
+      "signer": "alice.test.near",
+      "receiver": "pool.test.near",
+      "status": {
+        "SuccessValue": "dHJ1ZQ=="
+      }
+    },
+    {
+      "hash": "HtmXAjiMDQBetiWq1vSkJxQRAuzXVgeRfJVDJpKqpSGR",
+      "signer": "alice.test.near",
+      "receiver": "pool.test.near",
+      "status": {
+        "Failure": {
+          "ActionError": {
+            "index": 0,
+            "kind": {
+              "FunctionCallError": {
+                "ExecutionError": "WebAssembly trap: An `unreachable` opcode was executed."
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "hash": "FViuJbA2ND3ZGarYqNTfUxuGE9ah85UAzzstLA2T325W",
+      "signer": "alice.test.near",
+      "receiver": "vault.test.near",
+      "status": {
+        "SuccessValue": ""
+      }
+    },
+    {
+      "hash": "3Qzz1t8kcnaEkWenE4vU2FBH6H8k8brMwLv5ckjzjH9G",
+      "signer": "alice.test.near",
+      "receiver": "token.test.near",
+      "status": {
+        "SuccessValue": "IjEwMDAwMDAwMCI="
+      }
+    },
+    {
+      "hash": "ArJL8gBifLZxUgYFS2BFdccHZFZhsZtCKdoTLGaTtz4q",
+      "signer": "alice.test.near",
+      "receiver": "pool.test.near",
+      "status": {
+        "SuccessValue": ""
+      }
+    },
+    {
+      "hash": "8PQJPUXBoejTE3v1Yud3M21so5ase87rdoC9KsNESzHs",
+      "signer": "alice.test.near",
+      "receiver": "vault.test.near",
+      "status": {
+        "SuccessValue": "dHJ1ZQ=="
+      }
+    },
+    {
+      "hash": "CFJ515DuY7gKkreqqPBDQPnS3JWpK6SFuRFTFxRw3ES7",
+      "signer": "alice.test.near",
+      "receiver": "pool.test.near",
+      "status": {
+        "SuccessValue": "dHJ1ZQ=="
+      }
+    },
+    {
+      "hash": "AMWyuRNbNCkRXg93STe68SoYFVkstbnLXwDANWVrQvQt",
+      "signer": "alice.test.near",
+      "receiver": "vault.test.near",
+      "status": {
+        "SuccessValue": ""
+      }
+    },
+    {
+      "hash": "FVdum6Hu4At43Mwc5b8icg8AEMcefs2eZG295YnXKgfC",
+      "signer": "alice.test.near",
+      "receiver": "token.test.near",
+      "status": {
+        "SuccessValue": "IjEwMDAwMDAwMCI="
+      }
+    },
+    {
+      "hash": "ARqcR1AcKuSxPqFKWiePpgTnzQzNXzKPVDddvjWQHdmy",
+      "signer": "alice.test.near",
+      "receiver": "vault.test.near",
+      "status": {
+        "SuccessValue": ""
+      }
+    },
+    {
+      "hash": "EeAxgF7anW9XE3UgPh1Sajib8QGjEvA9desixt7NjB3h",
+      "signer": "stranger.test.near",
+      "receiver": "pool.test.near",
+      "status": {
+        "SuccessValue": ""
+      }
+    },
+    {
+      "hash": "7aJEGvq2drRP1pDDHfMo9Kjtyx6MhBcUzBV5mV12eday",
+      "signer": "stranger.test.near",
+      "receiver": "pool.test.near",
+      "status": {
+        "SuccessValue": ""
+      }
+    },
+    {
+      "hash": "55trtuo4Bjd4FDwQHEAb94Uy5TnWis2n8spVbacdW5EH",
+      "signer": "stranger.test.near",
+      "receiver": "vault.test.near",
+      "status": {
+        "SuccessValue": "dHJ1ZQ=="
+      }
+    },
+    {
+      "hash": "5SJPmCM6JPcgkifJcnSqoohK85imoZRVC1NGSNF1D9dQ",
+      "signer": "stranger.test.near",
+      "receiver": "pool.test.near",
+      "status": {
+        "SuccessValue": "ZmFsc2U="
+      }
+    },
+    {
+      "hash": "3SsR42RqXBHfxNq78Ko7DHQVzfMs4Zmz6hYNiPCzuh1L",
+      "signer": "stranger.test.near",
+      "receiver": "pool.test.near",
+      "status": {
+        "SuccessValue": "dHJ1ZQ=="
+      }
+    }
+  ]
+}

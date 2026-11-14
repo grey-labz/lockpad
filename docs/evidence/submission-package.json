@@ -1,0 +1,49 @@
+{
+  "schema": "lockpad-local-submission-v1",
+  "status": "PASS",
+  "packagedAt": "2026-11-14T00:29:00.039Z",
+  "sourceUrl": "https://github.com/grey-labz/lockpad",
+  "sourceFiles": 151,
+  "scope": "Four-contract, local NEAR Sandbox borrow-or-sell prototype; no public contract deployment",
+  "tests": {
+    "unit": 42,
+    "lending": 26,
+    "browser": 20,
+    "historicalThreeContractRelease": 11
+  },
+  "video": {
+    "seconds": 120,
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "narration": {
+      "provider": "ElevenLabs",
+      "voice": "Jack John - Conversational and Upbeat"
+    },
+    "listeningReviewed": false
+  },
+  "application": "Not submitted; the user enters personal fields and publishes the X demo post",
+  "archives": {
+    "lockpad-source.zip": {
+      "bytes": 3131389,
+      "sha256": "a664474e14cc6e05a06a0ed8695657542c364adc96b35788d73c93146db79711"
+    },
+    "lockpad-demo.mp4": {
+      "bytes": 7720383,
+      "sha256": "da3cb5c945e3a2f6ec2726d34b690edcee6936ed12f4547ba1a304da9b482cc1"
+    },
+    "lockpad-demo-editable.zip": {
+      "bytes": 35175735,
+      "sha256": "264f50d0fad836cf2879e49783c6c815bf7b671f381e9cd09591939496e4dd1c"
+    },
+    "submission-copy.md": {
+      "bytes": 2771,
+      "sha256": "f2fb4a57019fb8d637c8aa46ed7a0032d370ec208119bdfcdada51ad77b535b9"
+    }
+  },
+  "packageDirectory": "/home/greyw0rks/Lockpad/outputs/submission-2026-11-13-6DRuBB",
+  "submissionArchive": {
+    "bytes": 45763697,
+    "sha256": "445dadb0beca9c4207df276aeb3dd46123fafd59b3361a9430ce41e1510e7e02"
+  }
+}

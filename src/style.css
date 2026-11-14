@@ -16,13 +16,13 @@
 
 :root {
   color-scheme:dark;
-  --teal:#8ab0ab;
-  --charcoal:#3e505b;
-  --slate:#26413c;
-  --carbon:#1a1d1a;
-  --onyx:#03120e;
+  --teal:#16db65;
+  --charcoal:#0d2818;
+  --slate:#04471c;
+  --carbon:#020202;
+  --onyx:#020202;
   --muted:color-mix(in srgb,var(--teal) 82%,var(--onyx));
-  --line:#8ab0ab26;
+  --line:#16db6526;
   --ease-out:cubic-bezier(.23,1,.32,1);
   font-family:Manrope,Arial,sans-serif;
   font-synthesis:none;
@@ -253,7 +253,7 @@ main {
 }
 
 .secondary {
-  background:#8ab0ab07;
+  background:#16db6507;
   color:var(--teal)
 }
 
@@ -262,7 +262,7 @@ main {
   padding-left:16px;
   padding-right:16px;
   background:var(--slate);
-  border-color:#8ab0ab20;
+  border-color:#16db6520;
   font-size:11px;
   max-width:240px
 }
@@ -340,7 +340,7 @@ main {
 .spinner {
   width:13px;
   height:13px;
-  border:1.5px solid #8ab0ab40;
+  border:1.5px solid #16db6540;
   border-top-color:var(--teal);
   border-radius:50%;
   animation:spin .65s linear infinite
@@ -374,7 +374,7 @@ main {
   border:1px solid var(--line);
   border-radius:24px;
   overflow:hidden;
-  background:radial-gradient(ellipse at 50% 35%,#26413c32,transparent 66%),radial-gradient(#8ab0ab2b .6px,transparent .6px);
+  background:radial-gradient(ellipse at 50% 35%,#04471c32,transparent 66%),radial-gradient(#16db652b .6px,transparent .6px);
   background-size:auto,6px 6px
 }
 
@@ -390,7 +390,7 @@ main {
   display:grid;
   place-items:center;
   transform:rotate(-9deg);
-  box-shadow:12px 19px 35px #03120e70,inset 0 1px 0 #8ab0ab
+  box-shadow:12px 19px 35px #02020270,inset 0 1px 0 #16db65
 }
 
 .hero-symbol .logo-mark {
@@ -463,11 +463,11 @@ main {
 .floating-card {
   position:absolute;
   text-align:left;
-  border:1px solid #8ab0ab30;
+  border:1px solid #16db6530;
   border-radius:15px;
   background:var(--slate);
   padding:21px 23px;
-  box-shadow:0 16px 42px #03120e90;
+  box-shadow:0 16px 42px #02020290;
   z-index:1
 }
 
@@ -509,7 +509,7 @@ main {
   transform:rotate(-8deg);
   background:var(--teal);
   color:var(--onyx);
-  box-shadow:0 18px 44px #03120e90,inset 0 1px 0 #8ab0ab
+  box-shadow:0 18px 44px #02020290,inset 0 1px 0 #16db65
 }
 
 .floating-lock p {
@@ -518,7 +518,7 @@ main {
 
 .source-tag {
   font-size:8px;
-  border:1px solid #03120e40;
+  border:1px solid #02020240;
   padding:5px 8px;
   border-radius:20px;
   display:inline-flex;
@@ -572,7 +572,7 @@ main {
 .mini-calendar i {
   width:9px;
   height:9px;
-  border:1px solid #8ab0ab35;
+  border:1px solid #16db6535;
   border-radius:2px
 }
 
@@ -679,7 +679,7 @@ main {
   display:block;
   padding:25px;
   border:1px solid var(--line);
-  background:linear-gradient(145deg,#26413c45,#1a1d1a96);
+  background:linear-gradient(145deg,#04471c45,#02020296);
   border-radius:17px;
   min-width:0;
   transition:transform 180ms var(--ease-out),border-color 160ms ease,background-color 160ms ease
@@ -701,7 +701,7 @@ main {
   height:44px;
   border-radius:13px;
   background:var(--slate);
-  border:1px solid #8ab0ab20;
+  border:1px solid #16db6520;
   flex-shrink:0
 }
 
@@ -713,9 +713,9 @@ main {
   padding:6px 9px;
   line-height:1.4;
   border-radius:20px;
-  border:1px solid #8ab0ab30;
+  border:1px solid #16db6530;
   white-space:nowrap;
-  background:#8ab0ab08
+  background:#16db6508
 }
 
 .status i {
@@ -781,7 +781,7 @@ main {
   margin-left:auto;
   font-size:9px;
   border-radius:5px;
-  background:#8ab0ab0e;
+  background:#16db650e;
   padding:4px 7px
 }
 
@@ -816,7 +816,7 @@ main {
 
 .discount-pill {
   background:var(--slate);
-  border:1px solid #8ab0ab25;
+  border:1px solid #16db6525;
   padding:7px 10px;
   border-radius:7px;
   font-size:10px
@@ -846,7 +846,7 @@ main {
   padding:28px;
   border:1px solid var(--line);
   border-radius:16px;
-  background:#1a1d1a4d
+  background:#0202024d
 }
 
 .step>div {
@@ -877,7 +877,7 @@ main {
   display:flex;
   align-items:center;
   gap:24px;
-  background:linear-gradient(120deg,#26413c80,#26413c30);
+  background:linear-gradient(120deg,#04471c80,#04471c30);
   border:1px solid var(--line);
   border-radius:18px
 }
@@ -885,7 +885,7 @@ main {
 .callout-icon {
   width:68px;
   height:68px;
-  border:1px solid #8ab0ab30;
+  border:1px solid #16db6530;
   border-radius:18px;
   display:grid;
   place-items:center;
@@ -1082,7 +1082,7 @@ main {
   border-radius:16px;
   padding:48px 25px;
   text-align:center;
-  background:#1a1d1a50
+  background:#02020250
 }
 
 .empty-icon {
@@ -1121,7 +1121,7 @@ main {
 
 .skeleton-card span {
   display:block;
-  background:#8ab0ab10;
+  background:#16db6510;
   border-radius:8px;
   height:24px;
   margin-bottom:25px
@@ -1208,9 +1208,9 @@ main {
   gap:12px;
   padding:18px 18px 14px;
   background:var(--slate);
-  border:1px solid #8ab0ab65;
+  border:1px solid #16db6565;
   border-radius:13px;
-  box-shadow:0 15px 50px #03120ec0;
+  box-shadow:0 15px 50px #020202c0;
   z-index:15;
   font-size:12px;
   line-height:1.7
@@ -1250,14 +1250,14 @@ main {
   padding:28px;
   width:min(510px,calc(100vw - 30px));
   max-height:calc(100dvh - 44px);
-  border:1px solid #8ab0ab45;
+  border:1px solid #16db6545;
   border-radius:18px;
-  box-shadow:0 30px 100px #03120ed0;
+  box-shadow:0 30px 100px #020202d0;
   overscroll-behavior:contain
 }
 
 .dialog::backdrop {
-  background:#03120ebd;
+  background:#020202bd;
   backdrop-filter:blur(5px)
 }
 
@@ -1364,7 +1364,7 @@ main {
   font-size:11px;
   line-height:1.8;
   padding:12px 14px;
-  border:1px dashed #8ab0ab60;
+  border:1px dashed #16db6560;
   border-radius:9px;
   margin:12px 0;
   background:var(--slate)
@@ -1375,7 +1375,7 @@ main {
   align-items:start;
   gap:10px;
   border:1px solid var(--line);
-  background:#26413c3d;
+  background:#04471c3d;
   border-radius:10px;
   padding:14px;
   margin:18px 0
@@ -1457,7 +1457,7 @@ main {
   padding:34px;
   border:1px solid var(--line);
   border-radius:17px;
-  background:linear-gradient(130deg,var(--slate),#26413c35);
+  background:linear-gradient(130deg,var(--slate),#04471c35);
   display:flex;
   flex-direction:column;
   align-items:start
@@ -1467,7 +1467,7 @@ main {
   width:56px;
   height:56px;
   margin-bottom:29px;
-  background:#8ab0ab10
+  background:#16db6510
 }
 
 .payout-panel>span:not(.token-icon,.amount) {
@@ -1490,7 +1490,7 @@ main {
   padding:28px;
   border:1px solid var(--line);
   border-radius:16px;
-  background:#1a1d1a65
+  background:#02020265
 }
 
 .section-label {
@@ -1508,7 +1508,7 @@ main {
 .timeline-track {
   height:6px;
   border-radius:7px;
-  background:#8ab0ab18;
+  background:#16db6518;
   margin:27px 0 18px;
   overflow:hidden
 }
@@ -1556,7 +1556,7 @@ main {
   padding:27px;
   border:1px solid var(--line);
   border-radius:16px;
-  background:#1a1d1a65
+  background:#02020265
 }
 
 .source-facts h2 {
@@ -1687,7 +1687,7 @@ main {
   border:1px solid var(--line);
   border-radius:14px;
   overflow:hidden;
-  background:#1a1d1a65
+  background:#02020265
 }
 
 .holding-row {
@@ -1744,7 +1744,7 @@ main {
   padding:28px;
   border:1px solid var(--line);
   border-radius:16px;
-  background:#1a1d1a75
+  background:#02020275
 }
 
 .sell-grid h2 {
@@ -1770,8 +1770,8 @@ main {
 }
 
 .position-option.selected {
-  background:#26413c66;
-  border-color:#8ab0ab90
+  background:#04471c66;
+  border-color:#16db6590
 }
 
 .position-option>span:nth-child(2) {
@@ -1797,7 +1797,7 @@ main {
   place-items:center;
   height:17px;
   width:17px;
-  border:1px solid #8ab0ab70;
+  border:1px solid #16db6570;
   border-radius:50%;
   flex-shrink:0
 }
@@ -1973,7 +1973,7 @@ main {
 .activity-list {
   border:1px solid var(--line);
   border-radius:14px;
-  background:#1a1d1a65;
+  background:#02020265;
   overflow:hidden
 }
 
@@ -2058,7 +2058,7 @@ main {
   border:1px solid var(--line);
   border-radius:16px;
   overflow:hidden;
-  background:#1a1d1a65
+  background:#02020265
 }
 
 .source-entry {
@@ -2150,8 +2150,8 @@ main {
     color:var(--teal)
   }
   .button:hover:not(:disabled) {
-    border-color:#8ab0ab85;
-    background-color:#26413c60
+    border-color:#16db6585;
+    background-color:#04471c60
   }
   .primary:hover:not(:disabled) {
     background:var(--teal);
@@ -2160,16 +2160,16 @@ main {
   }
   .position-card:hover {
     transform:translateY(-3px);
-    border-color:#8ab0ab65
+    border-color:#16db6565
   }
   .icon-button:hover:not(:disabled) {
-    background:#8ab0ab14
+    background:#16db6514
   }
   .wallet-option:hover,.position-option:hover {
-    border-color:#8ab0ab70
+    border-color:#16db6570
   }
   .activity-row[href]:hover {
-    background:#26413c40
+    background:#04471c40
   }
 }
 
@@ -2482,7 +2482,7 @@ main {
     background:var(--carbon);
     border:1px solid var(--line);
     border-radius:13px;
-    box-shadow:0 20px 40px #03120ec0;
+    box-shadow:0 20px 40px #020202c0;
     z-index:10
   }
   .main-nav.nav-open {
@@ -2499,7 +2499,7 @@ main {
     display:none
   }
   .main-nav a[aria-current=page] {
-    background:#26413c50;
+    background:#04471c50;
     border-radius:7px;
     padding-left:10px
   }
@@ -2552,7 +2552,7 @@ main {
     width:auto;
     padding:16px 14px;
     border-radius:12px;
-    box-shadow:0 10px 25px #03120e80
+    box-shadow:0 10px 25px #02020280
   }
   .floating-lock {
     grid-column:1;

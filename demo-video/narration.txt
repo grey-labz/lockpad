@@ -1,0 +1,21 @@
+A locked position can still be valuable when you need liquidity today. Lockpad gives its owner two choices: borrow against it, or sell the payout right.
+
+This prototype uses four NEAR contracts: a reference vault, a funded lending pool, a marketplace, and a test token. Alice owns a one thousand token position.
+
+The pool can offer six hundred and fifty tokens now. With a one-time two percent fee, Alice would repay six hundred and sixty-three before the original maturity. These are illustrative prototype terms.
+
+Alice accepts. Her payout right secures the loan, and six hundred and fifty test tokens reach her wallet. The principal stays in its source vault.
+
+She repays six hundred and sixty-three tokens. The same payout NFT returns to her wallet, with its principal and original maturity preserved.
+
+If the borrowing offer is too low, Alice can list instead. Here, she chooses nine hundred and twenty tokens. A buyer must accept that price.
+
+Bob checks the position, reviews the price, and buys it. The original payout NFT reaches his wallet before the marketplace credits Alice's sale proceeds.
+
+Alice withdraws her nine hundred and twenty tokens. The sale gives her liquidity while the underlying principal remains locked.
+
+We advance local Sandbox time without changing the original maturity.
+
+Bob then claims the full one thousand token payout from the reference vault. The app marks his position redeemed.
+
+Each action leaves a receipt. This is proposed work before mainnet, using zero-value tokens. External DEX positions need a supported way to transfer or secure their payout rights.

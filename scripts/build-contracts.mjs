@@ -7,11 +7,11 @@ import { createHash } from "node:crypto";
 const project = resolve(import.meta.dirname, "..");
 const command = ["build", "-Z", "build-std=std,panic_abort", "--release", "--target", "wasm32-unknown-unknown"];
 if (!process.argv.includes("--update-lock")) command.push("--locked");
-console.log("Building the marketplace, reference vault, and test token for the NEAR Wasm MVP runtime…");
+console.log("Building the marketplace, lending pool, reference vault, and test token for the NEAR Wasm MVP runtime…");
 const child = spawn("cargo", command, { cwd: project, env: { ...process.env, RUSTC_BOOTSTRAP: "1" }, stdio: "inherit" });
 const code = await new Promise((resolve, reject) => { child.once("error", reject); child.once("exit", resolve); });
 if (code !== 0) process.exit(code || 1);
-const files = ["lockpad_marketplace.wasm", "lockpad_reference_vault.wasm", "lockpad_test_token.wasm"];
+const files = ["lockpad_marketplace.wasm", "lockpad_lending_pool.wasm", "lockpad_reference_vault.wasm", "lockpad_test_token.wasm"];
 const manifest = { builtAt: new Date().toISOString(), toolchain: execFileSync("rustc", ["--version"], { encoding: "utf8" }).trim() + "; Wasm MVP; build-std=std,panic_abort", contracts: {} };
 await mkdir(resolve(project, "res"), { recursive: true });
 for (const file of files) {
@@ -22,7 +22,7 @@ for (const file of files) {
   await copyFile(path, resolve(project, "res", file));
 }
 manifest.sources = {};
-for (const file of ["Cargo.toml", "Cargo.lock", "rust-toolchain.toml", ".cargo/config.toml", "contract/Cargo.toml", "contract/src/lib.rs", "marketplace/Cargo.toml", "marketplace/src/lib.rs", "token/Cargo.toml", "token/src/lib.rs"]) {
+for (const file of ["Cargo.toml", "Cargo.lock", "rust-toolchain.toml", ".cargo/config.toml", "contract/Cargo.toml", "contract/src/lib.rs", "marketplace/Cargo.toml", "marketplace/src/lib.rs", "lending/Cargo.toml", "lending/src/lib.rs", "token/Cargo.toml", "token/src/lib.rs"]) {
   manifest.sources[file] = createHash("sha256").update(await readFile(resolve(project, file))).digest("hex");
 }
 await mkdir(resolve(project, "docs/evidence"), { recursive: true });

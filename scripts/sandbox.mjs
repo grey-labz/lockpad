@@ -80,33 +80,39 @@ export async function createSandbox({ seed = false, onReceipt = () => {} } = {})
   try {
     const root = worker.rootAccount;
     const accounts = {};
-    for (const name of ["token", "vault", "market", "alice", "bob", "nora", "stranger"]) {
+    for (const name of ["token", "vault", "market", "pool", "alice", "bob", "nora", "stranger"]) {
       accounts[name] = await root.createSubAccount(name);
     }
-    const { token, vault, market } = accounts;
-    console.log("Deploying the reference vault, marketplace and test token…");
+    const { token, vault, market, pool } = accounts;
+    console.log("Deploying the reference vault, marketplace, lending pool and test token…");
     const deployments = await Promise.allSettled([
       token.deploy(join(project, "res/lockpad_test_token.wasm")),
       vault.deploy(join(project, "res/lockpad_reference_vault.wasm")),
       market.deploy(join(project, "res/lockpad_marketplace.wasm")),
+      pool.deploy(join(project, "res/lockpad_lending_pool.wasm")),
     ]);
     for (const outcome of deployments) { if (outcome.status === "rejected") throw outcome.reason; }
     await token.call(token, "new", {});
     await vault.call(vault, "new", { asset_id: token.accountId });
     await market.call(market, "new", { asset_id: token.accountId, source_ids: [vault.accountId] });
+    await pool.call(pool, "new", { asset_id: token.accountId, source_ids: [vault.accountId], funder_id: accounts.nora.accountId });
     const send = async (signer, receiver, methodName, args = {}, deposit = ONE, gas = GAS) => {
       const result = await signer.callRaw(receiver, methodName, args, { attachedDeposit: deposit, gas });
       onReceipt(result.result);
       return result;
     };
     const bounds = await token.view("storage_balance_bounds", {});
-    for (const account of [vault, market, accounts.alice, accounts.bob, accounts.nora]) {
+    for (const account of [vault, market, pool, accounts.alice, accounts.bob, accounts.nora]) {
       await send(account, token, "storage_deposit", { account_id: account.accountId, registration_only: true }, bounds.min);
-      if (![vault, market].includes(account)) {
+      if (![vault, market, pool].includes(account)) {
         await send(account, market, "register_account", {}, STORAGE);
+        await send(account, pool, "register_account", {}, STORAGE);
         await send(account, token, "faucet", {}, "0");
       }
     }
+    // The fixture lender contributes actual zero-value tokens; quotes use this balance.
+    await send(accounts.nora, token, "faucet", {}, "0");
+    await send(accounts.nora, token, "ft_transfer_call", { receiver_id: pool.accountId, amount: "1000000000", msg: JSON.stringify({ action: "fund" }) });
     const lock = async (signer, amount, duration) => {
       await send(signer, vault, "prepay_lock", {}, STORAGE);
       const result = await send(signer, token, "ft_transfer_call", {
@@ -133,7 +139,7 @@ export async function createSandbox({ seed = false, onReceipt = () => {} } = {})
         await list(accounts.nora, position.token_id, price);
       }
     }
-    return { worker, accounts, token, vault, market, send, lock, list, close: () => worker.tearDown() };
+    return { worker, accounts, token, vault, market, pool, send, lock, list, close: () => worker.tearDown() };
   } catch (error) {
     await worker.tearDown();
     throw error;

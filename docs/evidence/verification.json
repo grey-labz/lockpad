@@ -1,56 +1,58 @@
 {
+  "schema": "lockpad-local-verification-v2",
   "status": "PASS",
-  "verifiedAt": "2026-11-13T18:19:11.027Z",
-  "releaseId": "6bbdd731046243502e4f5c831640215759fa61fa754db96724d49685058ff248",
+  "verifiedAt": "2026-11-14T00:28:58.768Z",
+  "scope": "Four-contract borrow-or-sell prototype with real local NEAR Sandbox execution",
   "unitTests": {
-    "count": 35,
-    "executedAt": "2026-11-13T17:52:31.246Z"
+    "count": 42,
+    "executedAt": "2026-11-13T21:52:41.955Z"
   },
-  "contractBehaviors": {
-    "count": 19,
-    "executedAt": "2026-11-13T16:45:48.071Z",
-    "scope": "Saved real Sandbox execution; current contract sources and artifacts still match"
+  "lendingBehaviors": {
+    "count": 26,
+    "executedAt": "2026-11-13T21:29:56.438Z"
   },
   "browserBehaviors": {
-    "count": 15,
-    "executedAt": "2026-11-13T17:51:04.187Z",
-    "viewports": [
-      1440,
-      768,
-      390,
-      320
-    ]
+    "count": 20,
+    "executedAt": "2026-11-13T22:34:05.502Z",
+    "errors": 0
   },
-  "releaseBehaviors": {
+  "historicalThreeContractRelease": {
     "count": 11,
-    "executedAt": "2026-11-13T17:54:21.987Z",
-    "deploymentSignatures": 5,
-    "deploymentBroadcasts": 5
+    "executedAt": "2026-11-13T23:02:39.485Z",
+    "scope": "Optional token/vault/market executor; does not deploy the lending pool"
   },
-  "contracts": [
-    {
-      "role": "token",
-      "file": "lockpad_test_token.wasm",
-      "sha256": "44fd1b7d6df313f902c0592d0ec8c883009b865ae44069198da2c574ec4b71a2",
-      "codeHash": "5eJaEEgTq9zFDQWpGfZyuSDChQ5tbPoUccvGYR4TjVAR"
+  "contracts": {
+    "lockpad_marketplace.wasm": {
+      "bytes": 577605,
+      "sha256": "bfd986977195a2ece79a6d34004b48e2dc990a49bd6493d2b8f862b6a0f02dd6"
     },
-    {
-      "role": "vault",
-      "file": "lockpad_reference_vault.wasm",
-      "sha256": "ff225eebcea17861cadb8ac302f1fff5b920eaf1c608bbf17c383ed45d0f6637",
-      "codeHash": "JAwMv9Vc2iDwp5RTRbvNwp8kdshkEoM6PJeGJKuNcJM4"
+    "lockpad_lending_pool.wasm": {
+      "bytes": 620383,
+      "sha256": "c8f84e9770d65b084121c5a4271414f05edbb4b9830a95ce2d58264af7bf08ff"
     },
-    {
-      "role": "market",
-      "file": "lockpad_marketplace.wasm",
-      "sha256": "bfd986977195a2ece79a6d34004b48e2dc990a49bd6493d2b8f862b6a0f02dd6",
-      "codeHash": "DuuFZrnYGg2BVVYs2NPKw3bZoJFDHykdTXkb2yVuu1eM"
+    "lockpad_reference_vault.wasm": {
+      "bytes": 671404,
+      "sha256": "ff225eebcea17861cadb8ac302f1fff5b920eaf1c608bbf17c383ed45d0f6637"
+    },
+    "lockpad_test_token.wasm": {
+      "bytes": 309681,
+      "sha256": "44fd1b7d6df313f902c0592d0ec8c883009b865ae44069198da2c574ec4b71a2"
     }
-  ],
-  "hackathonPath": "Reproducible local build, public source and working X demo video (Q-012)",
-  "publicDeployment": "Optional; not requested for the current hackathon path",
-  "publication": "Current source awaits explicit human confirmation",
-  "submission": "Not submitted by this continuation",
-  "actors": "Temporary builder-controlled local fixtures; no public wallet acceptance or independent adoption",
-  "packageDirectory": "/home/greyw0rks/Lockpad/.release/lockpad-20261113/candidate"
+  },
+  "recording": {
+    "checks": 10,
+    "recordedAt": "2026-11-13T22:30:47.311Z",
+    "errors": 0
+  },
+  "video": {
+    "seconds": 120,
+    "frames": 3600,
+    "sha256": "da3cb5c945e3a2f6ec2726d34b690edcee6936ed12f4547ba1a304da9b482cc1",
+    "fullDecode": "PASS - all video and audio streams",
+    "listeningReviewed": false
+  },
+  "sourceDestination": "https://github.com/grey-labz/lockpad",
+  "publicDeployment": "No public contract deployment; Q-012 local-only demo path",
+  "application": "Prepared for the user to enter personal fields and publish the X demo post; not sent",
+  "actors": "Temporary builder-controlled accounts and zero-value tokens; no independent adoption"
 }

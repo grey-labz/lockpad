@@ -1,0 +1,10 @@
+{
+  "provider": "FFmpeg EBU R128",
+  "file": "renders/lockpad-demo.mp4",
+  "audio": {
+    "integratedLufs": -14.1,
+    "loudnessRangeLu": 6.6,
+    "truePeakDbfs": -1,
+    "listeningReviewed": false
+  }
+}

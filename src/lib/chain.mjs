@@ -14,7 +14,7 @@ async function jsonFetch(url, body) {
 export async function getEnvironment() {
   environmentPromise ||= localDemo ? jsonFetch("/api/demo/config") : Promise.resolve({
     mode: "testnet", runId: "testnet", network: "testnet",
-    market: build.VITE_MARKET_ACCOUNT || "", token: build.VITE_TOKEN_ACCOUNT || "", vault: build.VITE_VAULT_ACCOUNT || "",
+    market: build.VITE_MARKET_ACCOUNT || "", token: build.VITE_TOKEN_ACCOUNT || "", vault: build.VITE_VAULT_ACCOUNT || "", pool: build.VITE_POOL_ACCOUNT || "",
     rpc: build.VITE_NEAR_RPC || "https://test.rpc.fastnear.com", accounts: [],
   });
   return environmentPromise;

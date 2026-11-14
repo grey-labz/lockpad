@@ -1,0 +1,110 @@
+{
+  "status": "PASS",
+  "file": "renders/lockpad-demo.mp4",
+  "sha256": "da3cb5c945e3a2f6ec2726d34b690edcee6936ed12f4547ba1a304da9b482cc1",
+  "bytes": 7720383,
+  "durationSeconds": 120,
+  "width": 1920,
+  "height": 1080,
+  "fps": 30,
+  "frameCount": 3600,
+  "codecs": {
+    "video": "h264",
+    "audio": "aac",
+    "pixelFormat": "yuv420p"
+  },
+  "fullDecode": "PASS - all video and audio streams",
+  "sampledFrames": [
+    {
+      "time": 5.5,
+      "label": "One position. Borrow or sell.",
+      "file": "evidence/decoded-frame-1.png"
+    },
+    {
+      "time": 17,
+      "label": "Built with four NEAR contracts",
+      "file": "evidence/decoded-frame-2.png"
+    },
+    {
+      "time": 29.5,
+      "label": "Borrow 650 TUSD. Repay 663.",
+      "file": "evidence/decoded-frame-3.png"
+    },
+    {
+      "time": 41.5,
+      "label": "650 TUSD reaches Alice’s wallet",
+      "file": "evidence/decoded-frame-4.png"
+    },
+    {
+      "time": 52.5,
+      "label": "Repay 663 TUSD. Recover the same NFT.",
+      "file": "evidence/decoded-frame-5.png"
+    },
+    {
+      "time": 64.5,
+      "label": "List instead. Choose 920 TUSD.",
+      "file": "evidence/decoded-frame-6.png"
+    },
+    {
+      "time": 77,
+      "label": "The buyer gets the original NFT",
+      "file": "evidence/decoded-frame-7.png"
+    },
+    {
+      "time": 87.5,
+      "label": "Alice withdraws 920 TUSD",
+      "file": "evidence/decoded-frame-8.png"
+    },
+    {
+      "time": 95,
+      "label": "Local time advances. Same maturity.",
+      "file": "evidence/decoded-frame-9.png"
+    },
+    {
+      "time": 102.5,
+      "label": "Bob claims the full 1,000 TUSD",
+      "file": "evidence/decoded-frame-10.png"
+    },
+    {
+      "time": 113.5,
+      "label": "A working prototype before mainnet",
+      "file": "evidence/decoded-frame-11.png"
+    }
+  ],
+  "audio": {
+    "integratedLufs": -14.1,
+    "loudnessRangeLu": 6.6,
+    "truePeakDbfs": -1,
+    "listeningReviewed": false
+  },
+  "narration": {
+    "provider": "ElevenLabs",
+    "voice": "Jack John - Conversational and Upbeat"
+  },
+  "compositionCheck": {
+    "ok": true,
+    "browserSkipped": false
+  },
+  "compositionSources": {
+    "index.html": "d2a8961fd61e05b74ed490e56fbdbc9bcdd0459b868a680b021b0bde12448b3c",
+    "timing.json": "c7e2a81be1b82e801da0af26213cb019e37f708fa66ee3881605b3bb3021c9ca",
+    "compositions/activity.html": "1b03769cb07faa631819322806cf550d1dd99d3a361f1ed3d46c67a0e033f649",
+    "compositions/borrow.html": "27392d62b97b4d6e7e24888157b5f0a1ed4fe0db44cf38eca8a36c5d0cc66218",
+    "compositions/claim.html": "899de8e961cbf5c4891a2f02c0baccc3a38b15f1af2b422008cd2475ac356a1c",
+    "compositions/intro.html": "db6561de7525bce3046d338e5722dd02172d88cf53f35668361679e8453b18da",
+    "compositions/listing.html": "b0858de084f14d873a84a57a02b2090302ef52eed1054ec9fc875842034ddc6b",
+    "compositions/maturity.html": "93309e8d949bdac6e96517c2bede86b350781a08f3efbc43c327e854892d711d",
+    "compositions/purchase.html": "fbe6eeb8fd2ca84c1db95f2facdf7fc0caf5211c9caa4e491e4d23a5666136df",
+    "compositions/quote.html": "0ef11a4bc27c6826b351c2bef8a4c6db500e09f9a287ec01723f049fe6298280",
+    "compositions/repay.html": "c455b1e0b65809e9de713426abf73c3e965bba0a09e45e2b41090948d27c486d",
+    "compositions/seller.html": "43cda2ef69568e0c905d5c30b38e6df44071d65101a829e938e06622544695b0",
+    "compositions/source.html": "bd2454efd20e85a98cfadea8f5ceb2a051dda9b9657b4331e7cad7f4739ba4a7"
+  },
+  "capture": {
+    "status": "PASS",
+    "recordedAt": "2026-11-13T22:30:47.311Z",
+    "network": "isolated local NEAR Sandbox",
+    "token": "TUSD — no monetary value",
+    "actors": "Temporary builder-controlled accounts"
+  }
+}

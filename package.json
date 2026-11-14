@@ -1,9 +1,9 @@
 {
   "name": "lockpad",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
   "type": "module",
-  "description": "A NEAR marketplace for transferable, time-locked DeFi payout rights.",
+  "description": "Borrow against an eligible locked position or sell its payout right on NEAR.",
   "engines": { "node": ">=22.12.0" },
   "scripts": {
     "dev": "node scripts/demo-server.mjs",
@@ -14,6 +14,7 @@
     "contracts:build": "node scripts/build-contracts.mjs",
     "test": "node scripts/unit-tests.mjs",
     "test:contracts": "node scripts/contract-tests.mjs",
+    "test:lending": "node scripts/lending-tests.mjs",
     "test:e2e": "node scripts/browser-test.mjs",
     "test:release": "node scripts/release-tests.mjs",
     "release:plan": "node scripts/deploy.mjs",
@@ -24,7 +25,8 @@
     "release:trade": "node scripts/testnet-demo.mjs",
     "release:build": "node scripts/build-testnet.mjs",
     "release:bundle": "node scripts/package-release.mjs",
-    "verify": "npm test && npm run contracts:build && npm run test:contracts && npm run test:release && npm run build && npm run test:e2e"
+    "submission:bundle": "node scripts/package-submission.mjs",
+    "verify": "npm test && npm run contracts:build && npm run test:contracts && npm run test:lending && npm run test:release && npm run build && npm run test:e2e"
   },
   "keywords": [],
   "author": "",

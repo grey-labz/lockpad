@@ -1,5 +1,7 @@
 # Release Lockpad
 
+**Historical optional testnet procedure:** this guide deploys the earlier token, vault and marketplace. It does not deploy or verify the revised lending pool. The current delivery is the four-contract local prototype, narrated video and GreyLabs source; see [the materials](HACKATHON-MATERIALS.md) and run `npm run submission:bundle`. Account reserves and three-contract verification below do not establish a release of the borrow-or-sell build.
+
 Public testnet deployment is optional for this hackathon. The user's current path is [idea → local build → working demo video](HACKATHON-MATERIALS.md), with publication of the current source and a human-published X video. The tooling below is prepared for a later public testnet release if requested.
 
 The current release candidate is local. The reviewed [deployment plan](evidence/release-plan.json) targets a new test token, separate reference vault and marketplace. The existing [public repository](https://github.com/greyw0rks/timeshift) and [Pages app](https://greyw0rks.github.io/timeshift/) still contain baseline `cb4097c1249052d2f8940d9c88969b99023e98c1`.

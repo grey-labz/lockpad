@@ -1,5 +1,7 @@
 # Lockpad implementation
 
+Historical resale plan. The current [borrow-or-sell rebuild](REBUILD.md) and [judge guide](SETUP.md) describe the approved green interface, funded lending pool and four-contract demo.
+
 The user approved the centered ChronoTask-inspired hero with floating position cards on 13 November 2026. Final palette: muted teal `#8ab0ab`, charcoal blue `#3e505b`, dark slate grey `#26413c`, carbon black `#1a1d1a`, onyx `#03120e`. The lilac palette and earlier three design directions are superseded.
 
 ## Product

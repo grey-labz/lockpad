@@ -1,0 +1,13 @@
+[
+  { "id": "intro", "duration": 11, "title": "One position. Borrow or sell.", "text": "A locked position can still be valuable when you need liquidity today. Lockpad gives its owner two choices: borrow against it, or sell the payout right." },
+  { "id": "source", "duration": 12, "title": "Built with four NEAR contracts", "text": "This prototype uses four NEAR contracts: a reference vault, a funded lending pool, a marketplace, and a test token. Alice owns a one thousand token position." },
+  { "id": "quote", "duration": 13, "title": "Borrow 650 TUSD. Repay 663.", "text": "The pool can offer six hundred and fifty tokens now. With a one-time two percent fee, Alice would repay six hundred and sixty-three before the original maturity. These are illustrative prototype terms." },
+  { "id": "borrow", "duration": 11, "title": "650 TUSD reaches Alice’s wallet", "text": "Alice accepts. Her payout right secures the loan, and six hundred and fifty test tokens reach her wallet. The principal stays in its source vault." },
+  { "id": "repay", "duration": 11, "title": "Repay 663 TUSD. Recover the same NFT.", "text": "She repays six hundred and sixty-three tokens. The same payout NFT returns to her wallet, with its principal and original maturity preserved." },
+  { "id": "listing", "duration": 13, "title": "List instead. Choose 920 TUSD.", "text": "If the borrowing offer is too low, Alice can list instead. Here, she chooses nine hundred and twenty tokens. A buyer must accept that price." },
+  { "id": "purchase", "duration": 12, "title": "The buyer gets the original NFT", "text": "Bob checks the position, reviews the price, and buys it. The original payout NFT reaches his wallet before the marketplace credits Alice's sale proceeds." },
+  { "id": "seller", "duration": 9, "title": "Alice withdraws 920 TUSD", "text": "Alice withdraws her nine hundred and twenty tokens. The sale gives her liquidity while the underlying principal remains locked." },
+  { "id": "maturity", "duration": 6, "title": "Local time advances. Same maturity.", "text": "We advance local Sandbox time without changing the original maturity." },
+  { "id": "claim", "duration": 9, "title": "Bob claims the full 1,000 TUSD", "text": "Bob then claims the full one thousand token payout from the reference vault. The app marks his position redeemed." },
+  { "id": "activity", "duration": 13, "title": "A working prototype before mainnet", "text": "Each action leaves a receipt. This is proposed work before mainnet, using zero-value tokens. External DEX positions need a supported way to transfer or secure their payout rights." }
+]

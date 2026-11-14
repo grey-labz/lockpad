@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { action, assertOutcome, connectAccount, connector, disconnectAccount, getEnvironment, getOutcome, localDemo, receiptUrl, restoreAccount, sendAction, view } from "../lib/chain.mjs";
-import { timestampMs, toUnits } from "../lib/amounts.mjs";
+import { formatAmount, timestampMs, toUnits } from "../lib/amounts.mjs";
 import { assertEligible } from "../lib/market.mjs";
 
 const emptyAccount = { available: "0", proceeds: "0", listing_credits: 0, withdrawal: null };
-const initial = { listings: [], activity: [], holdings: [], sellerListings: [], ledger: emptyAccount, tokenBalance: "0", sources: [], ready: false, portfolioOwner: "" };
+const emptyLoanAccount = { loan_credits: 0, surplus: "0", withdrawal: null };
+const initial = { listings: [], activity: [], holdings: [], sellerListings: [], ledger: emptyAccount, loanLedger: emptyLoanAccount, loans: [], poolConfig: null, poolAccounting: null, tokenBalance: "0", sources: [], ready: false, portfolioOwner: "" };
 
 function savedJournal(runId) {
   try { return JSON.parse(localStorage.getItem(`lockpad-journal:${runId}`) || "[]"); }
@@ -58,34 +59,38 @@ export function useLockpad() {
     if (!environment) return;
     const ticket = ++generation.current;
     if (!environment.market || !environment.token || !environment.vault) {
-      setError("This marketplace is awaiting its public testnet deployment. You can still explore how payout resale works.");
+      setError("This prototype is awaiting its public testnet deployment. Explore how borrowing and payout resale would work.");
       setLoading(false);
       return;
     }
     try {
-      const [config, metadata] = await Promise.all([
-        view(environment.market, "get_config"), view(environment.token, "ft_metadata"),
+      const [config, metadata, poolConfig] = await Promise.all([
+        view(environment.market, "get_config"), view(environment.token, "ft_metadata"), environment.pool ? view(environment.pool, "get_config") : null,
       ]);
       if (config.version !== "lockpad-market-v1" || config.asset_id !== environment.token || metadata.decimals !== 6 || !config.source_ids.includes(environment.vault)) {
         throw new Error("Contract configuration does not match this application. Transactions are disabled.");
       }
+      if (poolConfig && (poolConfig.version !== "lockpad-lending-v1" || poolConfig.asset_id !== config.asset_id || !poolConfig.source_ids.includes(environment.vault) || poolConfig.source_ids.some(id => !config.source_ids.includes(id)))) throw new Error("Lending pool configuration does not match this prototype.");
       const sources = await Promise.all(config.source_ids.map(async sourceId => {
         const source = await view(sourceId, "get_config");
         if (source.version !== "lockpad-reference-v1" || source.asset_id !== config.asset_id) throw new Error("The source adapter is incompatible with this market.");
         return { ...source, id: sourceId, name: "Reference vault" };
       }));
-      const [listings, activity, ledger, tokenBalance, holdings, sellerListings] = await Promise.all([
+      const [listings, activity, ledger, tokenBalance, holdings, sellerListings, loanLedger, loans, poolAccounting] = await Promise.all([
         view(environment.market, "get_listings", { from_index: 0, limit: 100 }),
         view(environment.market, "get_activity", { from_index: 0, limit: 100 }),
         account ? view(environment.market, "get_account", { account_id: account }) : null,
         account ? view(environment.token, "ft_balance_of", { account_id: account }) : "0",
         account ? Promise.all(sources.map(async source => (await view(source.id, "get_positions_by_owner", { owner_id: account, from_index: "0", limit: 100 })).map(position => ({ ...position, source_id: source.id })))) : [],
         account ? view(environment.market, "get_listings_by_seller", { seller_id: account, from_index: 0, limit: 100 }) : [],
+        account && environment.pool ? view(environment.pool, "get_account", { account_id: account }) : null,
+        account && environment.pool ? view(environment.pool, "get_loans_by_borrower", { borrower_id: account, from_index: 0, limit: 100 }) : [],
+        environment.pool ? view(environment.pool, "get_accounting") : null,
       ]);
       if (ticket !== generation.current) return;
       const offset = timestampMs(config.timestamp) - Date.now();
       setClockOffset(offset); setNow(Date.now() + offset);
-      setData({ listings, activity, ledger: ledger || emptyAccount, registered: Boolean(ledger), tokenBalance, holdings: holdings.flat(), sellerListings, config, metadata, sources, ready: true, portfolioOwner: account });
+      setData({ listings, activity, ledger: ledger || emptyAccount, registered: Boolean(ledger), loanLedger: loanLedger || emptyLoanAccount, loans, poolConfig, poolAccounting, tokenBalance, holdings: holdings.flat(), sellerListings, config, metadata, sources, ready: true, portfolioOwner: account });
       setError("");
     } catch (error) {
       if (ticket === generation.current) { setError(error.message); setData(current => ({ ...current, ready: false })); }
@@ -207,7 +212,7 @@ export function useLockpad() {
     if (["Buying", "Canceling"].includes((await view(environment.market, "get_listing", { listing_id: listing.id }))?.status)) throw new Error("Delivery is still pending. Keep the receipt and check again later.");
   });
 
-  const createLock = (amount, duration) => run("Demo lock created. You can now list its payout right.", async send => {
+  const createLock = (amount, duration) => run("Test position created. Get a borrowing quote or list its payout right.", async send => {
     const value = toUnits(amount);
     if (BigInt(value) > BigInt(await view(environment.token, "ft_balance_of", { account_id: account }))) throw new Error("Get enough test tokens before creating this demo lock.");
     const source = data.sources[0];
@@ -215,15 +220,57 @@ export function useLockpad() {
     await send(action(environment.token, "ft_transfer_call", { receiver_id: source.id, amount: value, msg: JSON.stringify({ action: "lock", duration }) }), "Creating a fixed-maturity demo lock");
   });
 
+  const ensurePoolAccount = async send => {
+    if (!environment.pool || !data.poolConfig) throw new Error("A lending pool is not configured for this build.");
+    if (!await view(environment.pool, "get_account", { account_id: account })) await send(action(environment.pool, "register_account", {}, data.poolConfig.account_storage), "Preparing your lending account");
+  };
+  const borrow = (position, amount, quote) => run(`${formatAmount(amount)} TUSD borrowed. Your payout right secures the loan.`, async send => {
+    await ensurePoolAccount(send);
+    const source = await view(position.source_id, "get_position", { token_id: position.token_id });
+    assertEligible(source, position.source_id, account, environment, now);
+    const latest = await view(environment.pool, "get_quote", { principal: source.principal, unlock_at: source.unlock_at });
+    if (!latest.eligible || latest.quote_nonce !== quote.quote_nonce || BigInt(amount) > BigInt(latest.maximum) || BigInt(amount) <= 0n) throw new Error("This borrowing quote changed. Review the current offer before continuing.");
+    await ensureTokenAccount(send);
+    const ledger = await view(environment.pool, "get_account", { account_id: account });
+    if (!ledger.loan_credits) await send(action(environment.pool, "prepay_loan", {}, data.poolConfig.loan_storage), "Preparing your loan");
+    await send(action(position.source_id, "nft_transfer_call", { receiver_id: environment.pool, token_id: position.token_id, msg: JSON.stringify({ amount, principal: source.principal, unlock_at: source.unlock_at, quote_nonce: latest.quote_nonce }) }), "Securing your payout right as collateral");
+    const loans = await view(environment.pool, "get_loans_by_borrower", { borrower_id: account, from_index: 0, limit: 100 });
+    const loan = loans.find(item => item.source_id === position.source_id && item.token_id === position.token_id && item.status === "CollateralReady");
+    if (!loan) throw new Error("Collateral is not confirmed. Check Activity before retrying.");
+    await send(action(environment.pool, "draw_loan", { loan_id: loan.id }), "Receiving your borrowed tokens");
+    if ((await view(environment.pool, "get_loan", { loan_id: loan.id }))?.status !== "Active") throw new Error("The loan is still pending. Continue from My positions after checking its receipt.");
+  });
+  const drawLoan = loan => run("Borrowed tokens arrived in your wallet.", async send => {
+    await ensureTokenAccount(send);
+    await send(action(environment.pool, "draw_loan", { loan_id: loan.id }), "Receiving the reserved loan");
+  });
+  const repayLoan = loan => run("Loan repaid. The original payout right is back in your wallet.", async send => {
+    const latest = await view(environment.pool, "get_loan", { loan_id: loan.id });
+    if (latest.status !== "Active" || timestampMs(latest.unlock_at) <= now) throw new Error("This loan is no longer available for repayment. Refresh its status.");
+    if (BigInt(await view(environment.token, "ft_balance_of", { account_id: account })) < BigInt(latest.repay_amount)) throw new Error("Your wallet needs enough TUSD to cover the loan and its one-time fee. Get test tokens from My positions.");
+    await send(action(environment.token, "ft_transfer_call", { receiver_id: environment.pool, amount: latest.repay_amount, msg: JSON.stringify({ action: "repay", loan_id: loan.id }) }), "Repaying the loan and its fee");
+    await send(action(environment.pool, "release_collateral", { loan_id: loan.id }, data.poolConfig.operation_storage), "Returning your original payout right");
+    if ((await view(loan.source_id, "get_position", { token_id: loan.token_id }))?.owner_id !== account) throw new Error("Repayment is recorded but the collateral return needs review. Check My positions before paying again.");
+  });
+  const releaseLoan = loan => run("Your payout right returned to your wallet.", send => send(action(environment.pool, "release_collateral", { loan_id: loan.id }, data.poolConfig.operation_storage), "Returning repaid collateral"));
+  const cancelLoan = loan => run("Undrawn loan cancelled. The payout right is back in your wallet.", send => send(action(environment.pool, "cancel_collateral", { loan_id: loan.id }, data.poolConfig.operation_storage), "Returning your undrawn collateral"));
+  const settleLoan = loan => run("Maturity payout settled. The amount due was retained and your remaining payout is withdrawable.", send => send(action(environment.pool, "settle_maturity", { loan_id: loan.id }), "Settling the unpaid loan at maturity"));
+  const withdrawSurplus = () => run("Your remaining collateral payout arrived in your wallet.", async send => { await ensureTokenAccount(send); await send(action(environment.pool, "withdraw_surplus"), "Withdrawing your remaining payout"); });
+  const reconcileLoan = loan => run("Loan state refreshed. Review your position before continuing.", async send => {
+    const method = loan.status === "Returning" ? "reconcile_return" : loan.status === "Settling" ? "reconcile_maturity" : "reset_expired_check";
+    await send(action(environment.pool, method, { loan_id: loan.id }, "0"), "Checking the pending loan receipt", { allowFalse: true });
+    if (["Checking", "Returning", "Settling", "Disbursing"].includes((await view(environment.pool, "get_loan", { loan_id: loan.id }))?.status)) throw new Error("The loan is still pending. Keep its receipt and check again later.");
+  });
+
   async function reviewReceipt(item) {
     try {
       const result = await getOutcome(item.hash, item.signer);
-      assertOutcome(result, { ...item.request, allowFalse: item.request.methodName === "reconcile" });
+      assertOutcome(result, { ...item.request, allowFalse: ["reconcile", "reconcile_return", "reconcile_maturity"].includes(item.request.methodName) });
       setJournal(current => current.map(entry => entry.id === item.id ? { ...entry, state: "Confirmed", error: undefined } : entry));
       await latestRefresh.current?.();
       setNotice({ type: "success", message: "Receipt confirmed. Your positions and balances are refreshed.", receipt: item.receipt });
     } catch (error) { setNotice({ type: "error", message: error.message, receipt: item.receipt }); }
   }
 
-  return { environment, account, data, loading, error, notice, setNotice, busy, progress, now, journal, refresh, reviewReceipt, connect, disconnect, faucet, withdraw, buy, list, cancel, redeem, reconcile, createLock, ready: data.ready && data.portfolioOwner === account && Boolean(account) && !busy };
+  return { environment, account, data, loading, error, notice, setNotice, busy, progress, now, journal, refresh, reviewReceipt, connect, disconnect, faucet, withdraw, buy, list, cancel, redeem, reconcile, createLock, borrow, drawLoan, repayLoan, releaseLoan, cancelLoan, settleLoan, withdrawSurplus, reconcileLoan, ready: data.ready && data.portfolioOwner === account && Boolean(account) && !busy };
 }

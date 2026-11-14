@@ -1,15 +1,28 @@
-# Lockpad
+# Lockpad submission copy
 
-Lockpad is a secondary marketplace for fixed-maturity payout rights on NEAR. An owner sells the right to a future payout before its lock expires, while the buyer receives the original payout NFT and claims its principal at the original maturity.
+**Project:** Lockpad
 
-The local MVP uses a separate reference vault, marketplace and zero-value TUSD faucet. The vault retains principal; the market accepts only supported payout rights, verifies seller authority and source data, deposits recoverable purchase funding, delivers the NFT, and releases withdrawable seller proceeds after delivery.
+**Source:** https://github.com/grey-labz/lockpad
 
-A 1,000-token payout sold for 920 gives the seller early liquidity and the buyer an 8% discount. The buyer's gross difference is 80 tokens, or 8.70% of purchase price, before gas and storage. No annualized yield or guaranteed return is claimed.
+**Demo file:** [lockpad-demo.mp4](demo-video/renders/lockpad-demo.mp4) — two-minute narrated walkthrough. The public X post containing this video supplies the submission's demo URL.
 
-Primary track: **Unstoppable DeFi**. The product includes marketplace search and filters, a source-checked maturity timeline, existing-position import and listing, ownership and balance views, sale withdrawals, maturity claims, and transaction receipts. No third-party protocol, AI or NEAR Intents integration is claimed.
+**Suggested track:** Unstoppable DeFi (`defi`). The payout NFTs also give a concrete fit for NFTs That Do Something (`nfts`); select the tracks you want in the form.
 
-Saved checks exercise actual local NEAR contracts: 19 contract behaviors, 35 amount/filter/eligibility/receipt/release checks, and 15 browser behaviors across seven routes and four viewport sizes. The deployment rehearsal additionally checks interrupted deployment recovery, exact code and initializer matching, both token registrations and final-receipt trade verification. Browser tests advance local Sandbox time for maturity and create a controlled cancellation race to verify unused buyer funding recovery. Actors are temporary builder-controlled fixtures; this is not adoption or public-testnet acceptance evidence.
+## Description
 
-[Judge guide](docs/SETUP.md) · [Architecture and limits](docs/ARCHITECTURE.md) · [Release guide](docs/RELEASE.md)
+Lockpad helps owners get liquidity from a supported locked position before maturity. They can accept an immediate borrowing quote from a funded lending pool, or list the payout right on a marketplace if the borrowing amount is unsuitable. Four working NEAR contracts separate the reference vault, lending pool, marketplace and zero-value test token. The payout NFT secures a loan while principal stays at its source; repayment returns the same position. In a sale, the original NFT reaches the buyer before the seller can withdraw proceeds. The buyer claims the payout at the original maturity. The local demo proves a 650 TUSD loan, 663 repayment, 920 sale and 1,000 maturity payout with transaction receipts. These are illustrative fixed-payout prototype terms. External DEX adapters and production valuation remain proposed work before mainnet; no universal position transferability, public adoption or audit is claimed.
 
-The earlier [public app](https://greyw0rks.github.io/timeshift/) and [public source](https://github.com/greyw0rks/timeshift) predate this implementation. The new three-contract marketplace is a local, unpublished release candidate. The current hackathon path uses [reproducible source and a working local demo video](docs/HACKATHON-MATERIALS.md), as allowed by Q-012. Current source publication, video upload and submission remain pending; public testnet deployment is optional. Contracts retain upgrade keys and are unaudited; arbitrary withdrawal/redemption callback failure remains a documented recovery limit.
+## X post — ready to copy, unpublished
+
+> Lockpad: borrow against a supported locked position, or list its payout right if the quote is too low. Watch the working local demo: borrow, repay, sell and claim on NEAR. Built at NEAR HACKATHON. @NEARProtocol #NEARHackathon
+> https://github.com/grey-labz/lockpad
+
+Attach the exported video and publish the post yourself. Paste that public post URL into the form at https://nearhackathon.com/#apply.
+
+## Fields you will enter
+
+Enter your lead name, contact email, team size, NEAR mainnet prize account and public X demo-post URL. Confirm Lockpad has not already been submitted and that your existing entries are within the two-independent-project limit. Greed Machine is disclosed as a separate project.
+
+Read and accept the form's consent yourself: “I agree that the organizers may use these details to review our submission and contact us about this hackathon.” Personal and payout details are intentionally absent from this repository.
+
+The saved organizer rules accept a local-only demo with reproducible public source and an X video (Q-012). Public testnet positions are optional. The recorded submission deadline is **14 November 2026 at 23:59 UTC**, or **15 November at 00:59 Lagos**; recheck the live rules before sending. Submit once. Corrections to an existing application use https://nearhackathon.com/request-changes.

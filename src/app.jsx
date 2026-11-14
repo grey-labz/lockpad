@@ -6,9 +6,11 @@ import { assertEligible, selectListings } from "./lib/market.mjs";
 import { formatAmount, maturityDate, timeLeft, timestampMs, toUnits, tradeMath } from "./lib/amounts.mjs";
 import { Icon, Logo } from "./components/icon.jsx";
 import { Amount, Dialog, Empty, PageHeading, PositionCard, Status, Timeline } from "./components/interface.jsx";
+import { Borrow, BorrowBreakdown, LoanList } from "./borrow.jsx";
 import "./style.css";
+import "./theme.css";
 
-const navigation = [["/marketplace", "Marketplace"], ["/sources", "How it works"], ["/positions", "My positions"], ["/activity", "Activity"]];
+const navigation = [["/borrow", "Borrow"], ["/marketplace", "Marketplace"], ["/sources", "How it works"], ["/positions", "My positions"], ["/activity", "Activity"]];
 const termNames = { 60: "1 minute", 300: "5 minutes", 604800: "7 days", 2592000: "30 days", 7776000: "90 days" };
 const navigate = path => { location.hash = path; };
 const shortAccount = value => value.length > 22 ? `${value.slice(0, 10)}…${value.slice(-9)}` : value;
@@ -18,6 +20,7 @@ function App() {
   const [route, setRoute] = useState(location.hash.slice(1) || "/");
   const [modal, setModal] = useState(null);
   const [salePosition, setSalePosition] = useState(null);
+  const [borrowPosition, setBorrowPosition] = useState(null);
   const [mobileMenu, setMobileMenu] = useState(false);
   const [detail, setDetail] = useState(null);
   const lookup = useRef(0);
@@ -53,6 +56,7 @@ function App() {
   const openAccount = () => setModal({ kind: "account" });
   const ask = (kind, value) => setModal({ kind, ...value, signer: lp.account });
   const sell = position => { setSalePosition(position); setModal(null); navigate("/sell"); };
+  const borrow = position => { setBorrowPosition(position); setModal(null); navigate("/borrow"); };
   const cards = selectListings(lp.data.listings, { now: lp.now });
   const close = () => setModal(null);
   const accountCurrent = lp.data.portfolioOwner === lp.account;
@@ -71,14 +75,14 @@ function App() {
         {navigation.map(([path, label]) => <a href={`#${path}`} key={path} aria-current={activeRoute === path ? "page" : undefined}>{label}</a>)}
       </nav>
       <div className="header-actions">
-        <a className="button secondary sell-header" href="#/sell">Sell a position <Icon name="northeast" size={15} /></a>
+        <a className="button secondary sell-header" href="#/positions">Borrow or sell <Icon name="northeast" size={15} /></a>
         <button className="button wallet-button" disabled={lp.busy || (!localDemo && !lp.environment?.market)} onClick={openAccount} title={lp.account || undefined}>
           <Icon name="wallet" size={17} /><span>{lp.account ? shortAccount(lp.account) : localDemo ? "Choose test wallet" : "Connect wallet"}</span>
         </button>
         <button className="icon-button menu-button" aria-label="Toggle navigation" aria-expanded={mobileMenu} onClick={() => setMobileMenu(value => !value)}><Icon name={mobileMenu ? "close" : "menu"} /></button>
       </div>
     </header>
-    <div className="network-bar"><span className="network-dot" /><span>{localDemo ? "Local NEAR Sandbox" : "NEAR testnet prototype"}</span><span className="network-separator">/</span><span>Test tokens have no monetary value</span>{lp.busy && <span className="transaction-progress" role="status"><span className="spinner" />{lp.progress}</span>}</div>
+    <div className="network-bar"><span className="network-dot" /><span>{localDemo ? "Local NEAR Sandbox" : "NEAR testnet"}</span><span className="network-separator">/</span><span>Pre-mainnet prototype</span><span className="network-separator">/</span><span>Test tokens have no monetary value</span>{lp.busy && <span className="transaction-progress" role="status"><span className="spinner" />{lp.progress}</span>}</div>
     <main id="main" tabIndex={-1}>
       {lp.error && <div className={`connection-banner ${lp.environment?.market ? "connection-error" : ""}`} role={lp.environment?.market ? "alert" : "status"}>
         <Icon name="info" size={18} /><span>{lp.error}</span>{lp.environment?.market && <button className="text-button" disabled={lp.busy} onClick={lp.refresh}>Retry connection</button>}
@@ -89,14 +93,15 @@ function App() {
       </aside>}
       {activeRoute === "/" && <Home lp={lp} listings={cards} />}
       {activeRoute === "/marketplace" && <Marketplace lp={lp} />}
+      {activeRoute === "/borrow" && <Borrow lp={lp} prefill={borrowPosition} openAccount={openAccount} onReview={(position, amount, quote) => ask("borrow", { position, amount, quote })} sell={sell} />}
       {activeRoute === "/sources" && <Sources lp={lp} />}
-      {activeRoute === "/positions" && <Portfolio lp={lp} current={accountCurrent} openAccount={openAccount} sell={sell} ask={ask} />}
+      {activeRoute === "/positions" && <Portfolio lp={lp} current={accountCurrent} openAccount={openAccount} sell={sell} borrow={borrow} ask={ask} />}
       {activeRoute === "/sell" && <Sell lp={lp} prefill={salePosition} openAccount={openAccount} onReview={(position, price) => ask("list", { position, price })} />}
       {activeRoute === "/activity" && <Activity lp={lp} />}
       {detailId && <PositionDetail lp={lp} detail={detail} openAccount={openAccount} ask={ask} />}
-      {!["/", "/marketplace", "/sources", "/positions", "/sell", "/activity"].includes(activeRoute) && !detailId && <Empty title="This page doesn't exist" action={<a className="button primary" href="#/">Back to Lockpad</a>}>Explore the marketplace to find a payout right.</Empty>}
+      {!["/", "/borrow", "/marketplace", "/sources", "/positions", "/sell", "/activity"].includes(activeRoute) && !detailId && <Empty title="This page doesn't exist" action={<a className="button primary" href="#/">Back to Lockpad</a>}>Borrow against an eligible position or explore its sale options.</Empty>}
     </main>
-    <footer className="site-footer"><a className="wordmark" href="#/"><Logo /><span>lockpad.</span></a><p>Time stays locked. Ownership can move.</p><div><a href="#/sources">Payout rights & risks</a><a href="https://github.com/greyw0rks/timeshift" target="_blank" rel="noreferrer">Source <Icon name="northeast" size={13} /></a><span>{localDemo ? "Local contract demo" : "Testnet prototype"}</span></div></footer>
+    <footer className="site-footer"><a className="wordmark" href="#/"><Logo /><span>lockpad.</span></a><p>One locked position. Two ways forward.</p><div><a href="#/sources">Eligibility & risks</a><a href="https://github.com/grey-labz/lockpad" target="_blank" rel="noreferrer">Source <Icon name="northeast" size={13} /></a><span>Pre-mainnet prototype</span></div></footer>
 
     {modal?.kind === "account" && <Dialog title={localDemo ? "Choose a local test wallet" : lp.account ? "Your wallet" : "Connect your wallet"} close={close} busy={lp.busy} error={lp.notice?.type === "error" ? lp.notice.message : undefined}>
       {localDemo ? <><p className="dialog-copy">These temporary wallets belong to this local demo. Their tokens and positions are real Sandbox contract state.</p><div className="wallet-list">
@@ -121,6 +126,23 @@ function App() {
       <p className="fee-note">{lp.data.ledger.listing_credits ? "Your prepaid listing credit will be used." : "0.03 testnet NEAR for listing storage."}{!lp.data.registered && " Your first market account also needs 0.03 testnet NEAR."} Gas is separate. A later cancellation costs 0.01 testnet NEAR. Storage charges are not refunded.</p>
       <button className="button primary full-width" disabled={confirmDisabled} onClick={() => complete(() => lp.list(modal.position, modal.price), "/positions")}>{lp.busy ? lp.progress : "Confirm listing"}<Icon name="northeast" size={17} /></button>
     </Dialog>}
+    {modal?.kind === "borrow" && <Dialog title="Review your borrowing offer" close={close} busy={lp.busy} error={lp.notice?.type === "error" ? lp.notice.message : undefined}>
+      <BorrowBreakdown position={modal.position} amount={modal.amount} terms={lp.data.poolConfig} />
+      <p className="dialog-copy">Repay before {maturityDate(modal.position.unlock_at, true)} to recover the original payout right. Its principal and maturity stay in the source vault.</p>
+      <div className="funding-note"><Icon name="shield" size={19} /><p>If unpaid at maturity, the pool claims the payout, retains the loan and one-time fee, and credits the remainder to you. These are illustrative terms for this prototype.</p></div>
+      <p className="fee-note">{lp.data.loanLedger.loan_credits ? "Your prepaid loan credit is used." : "0.03 test NEAR for loan storage."} A first pool account costs 0.03 test NEAR. Returning collateral later costs 0.01 test NEAR. Gas is separate; storage is not refunded.</p>
+      <button className="button primary full-width" disabled={confirmDisabled} onClick={() => complete(() => lp.borrow(modal.position, modal.amount, modal.quote), "/positions")}>{lp.busy ? lp.progress : `Confirm borrow · ${formatAmount(modal.amount)} TUSD`}<Icon name="arrow" size={17} /></button>
+    </Dialog>}
+    {["repayLoan", "drawLoan", "releaseLoan", "cancelLoan", "settleLoan", "withdrawSurplus"].includes(modal?.kind) && <Dialog title={({ repayLoan: "Repay and recover your position", drawLoan: "Receive your reserved loan", releaseLoan: "Return your repaid collateral", cancelLoan: "Cancel this undrawn loan", settleLoan: "Settle the loan at maturity", withdrawSurplus: "Withdraw your remaining payout" })[modal.kind]} close={close} busy={lp.busy} error={lp.notice?.type === "error" ? lp.notice.message : undefined}>
+      {modal.loan && <div className="purchase-breakdown"><div><span>Borrowed</span><Amount value={modal.loan.amount} /></div><div><span>One-time fee</span><Amount value={modal.loan.fee} /></div><div className="breakdown-total"><span>Total amount due</span><Amount value={modal.loan.repay_amount} /></div></div>}
+      <p className="dialog-copy">{modal.kind === "repayLoan" ? `Repay ${formatAmount(modal.loan.repay_amount)} TUSD before ${maturityDate(modal.loan.unlock_at, true)}. The same payout right returns to your wallet; its original maturity is preserved.`
+        : modal.kind === "settleLoan" ? `The source pays ${formatAmount(modal.loan.collateral)} TUSD. The pool retains ${formatAmount(modal.loan.repay_amount)} and credits the remaining ${formatAmount(BigInt(modal.loan.collateral) - BigInt(modal.loan.repay_amount))} TUSD to you for withdrawal.`
+          : modal.kind === "drawLoan" ? `${formatAmount(modal.loan.amount)} TUSD will be paid from the funds already reserved for this collateral.`
+            : modal.kind === "withdrawSurplus" ? `${formatAmount(modal.value)} TUSD of the remaining source payout will return to your wallet.`
+              : "The original payout right returns to your wallet. The principal stays in its source vault and its maturity does not change."}</p>
+      <p className="fee-note">Only zero-value test tokens are used. Repayment and collateral return are separate confirmed steps. Gas and nonrefundable storage are separate.</p>
+      <button className="button primary full-width" disabled={confirmDisabled} onClick={() => complete(() => modal.kind === "withdrawSurplus" ? lp.withdrawSurplus() : lp[modal.kind](modal.loan))}>{lp.busy ? lp.progress : modal.kind === "repayLoan" ? `Confirm repayment · ${formatAmount(modal.loan.repay_amount)} TUSD` : "Confirm action"}<Icon name="arrow" size={17} /></button>
+    </Dialog>}
     {["cancel", "redeem", "withdraw"].includes(modal?.kind) && <Dialog title={modal.kind === "cancel" ? "Remove this listing?" : modal.kind === "redeem" ? "Claim your original payout" : modal.balanceKind === "proceeds" ? "Withdraw your sale proceeds" : "Return unused market funds"} close={close} busy={lp.busy} error={lp.notice?.type === "error" ? lp.notice.message : undefined}>
       <p className="dialog-copy">{modal.kind === "cancel" ? "The unsold payout right returns to your wallet. Your principal and maturity remain in the reference vault. Cancellation uses 0.01 testnet NEAR for transfer receipt storage."
         : modal.kind === "redeem" ? `The reference vault pays ${formatAmount(modal.position.principal)} TUSD to the current owner. This claim can be redeemed once.`
@@ -134,29 +156,26 @@ function App() {
 
 function Home({ lp, listings }) {
   return <div className="landing">
-    <section className="hero" aria-labelledby="hero-title">
+    <section className="hero borrow-hero" aria-labelledby="hero-title">
       <div className="hero-symbol"><Logo /></div>
-      <div className="floating-card floating-lock" aria-label="Illustrative locked position"><div className="float-top"><Icon name="lock" size={17} /><span>Example position</span></div><strong>1,000 <small>TUSD</small></strong><p>Locked for 30 days</p><span className="source-tag">Reference vault</span></div>
-      <div className="floating-card floating-calendar"><Icon name="calendar" size={19} /><span className="float-caption">Original maturity</span><strong>Day 30</strong><p>Sale on day 15</p><div className="mini-calendar">{Array.from({ length: 14 }, (_, index) => <i className={index === 13 ? "calendar-selected" : ""} key={index} />)}</div></div>
-      <div className="hero-copy"><p className="eyebrow"><span className="network-dot" /> A MARKETPLACE FOR LOCKED PAYOUTS</p><h1 id="hero-title" tabIndex={-1}>Your funds are locked.<br /><span>Your options aren’t.</span></h1><p>Get liquidity before your lock expires. Sell your payout right at a discount, or buy someone else’s future payout.</p><div className="hero-actions"><a className="button primary" href="#/marketplace">Explore the marketplace <Icon name="northeast" size={18} /></a><a className="text-link" href="#/sell">Sell a position <Icon name="arrow" size={17} /></a></div></div>
-      <div className="floating-card floating-sale"><span className="float-caption">Seller receives early</span><strong>920 <small>TUSD</small></strong><p>A little less. A lot sooner.</p><span className="mini-flow"><Icon name="wallet" size={15} /> Day 15 <Icon name="arrow" size={14} /> Your wallet</span></div>
-      <div className="floating-card floating-payout"><span className="float-caption">Buyer claims at maturity</span><strong>1,000 <small>TUSD</small></strong><p>8% discount · Original date</p><span className="example-label">Illustrative trade, not a live listing</span></div>
+      <div className="hero-copy"><p className="eyebrow"><span className="network-dot" /> BORROW OR SELL YOUR LOCKED POSITION</p><h1 id="hero-title" tabIndex={-1}>Locked position.<br /><span>Two ways forward.</span></h1><p>Borrow against an eligible payout right. If the pool’s offer is too low, list it on the marketplace at a price you choose.</p><div className="hero-actions"><a className="button primary" href="#/borrow">Get a borrowing quote <Icon name="arrow" size={18} /></a><a className="button secondary" href="#/marketplace">Explore the marketplace <Icon name="northeast" size={17} /></a></div></div>
+      <div className="hero-comparison" aria-label="Illustrative borrowing and sale comparison"><div className="comparison-caption"><Icon name="lock" size={16} /><span>1,000 TUSD locked payout</span><span>Illustrative example</span></div><div className="comparison-options"><article><span className="comparison-icon"><Icon name="wallet" size={20} /></span><div><p>Borrow against it</p><strong>650 <small>TUSD</small></strong><span>Repay 663 · recover your payout right</span></div><Icon name="arrow" size={20} /></article><article><span className="comparison-icon"><Icon name="northeast" size={20} /></span><div><p>Or list it for sale</p><strong>920 <small>TUSD</small></strong><span>Example price · a buyer is needed</span></div><Icon name="northeast" size={20} /></article></div></div>
     </section>
     <div className="trust-strip"><span className="near-label"><span className="near-symbol">N</span> Built on NEAR</span><span><Icon name="shield" size={17} /> Ownership checked onchain</span><span><Icon name="calendar" size={17} /> Original maturity preserved</span><span><Icon name="lock" size={17} /> Principal stays in its vault</span></div>
     <section className="home-market"><div className="section-heading"><div><p className="eyebrow">{localDemo ? "FROM THE LOCAL CONTRACTS" : "THE MARKETPLACE"}</p><h2>A future payout. A price today.</h2><p>{localDemo ? "Actual positions from this isolated Sandbox run." : "Supported positions appear after their ownership and payout are checked."}</p></div><a className="text-link" href="#/marketplace">View marketplace <Icon name="arrow" size={17} /></a></div>
       {lp.loading ? <LoadingCards /> : listings.length ? <div className="position-grid">{listings.slice(0, 3).map(listing => <PositionCard listing={listing} now={lp.now} key={listing.id} />)}</div>
         : <Empty title="No available payout rights yet" action={<a className="button secondary" href="#/sources">See supported sources <Icon name="arrow" size={16} /></a>}>A position needs a verified transferable payout right before it can appear here.</Empty>}
     </section>
-    <section className="how-section"><div className="section-heading"><div><p className="eyebrow">SAME LOCK. NEW POSSIBILITIES.</p><h2>Time stays. Ownership moves.</h2></div><p>Your future payout can change hands<br />without moving its maturity date.</p></div><Steps /></section>
-    <section className="source-callout"><span className="callout-icon"><Icon name="shield" size={30} /></span><div><p className="eyebrow">ELIGIBLE RIGHTS ONLY</p><h2>Not every lock can be sold.</h2><p>The reference vault is supported. Third-party DeFi sources need their own verified transfer and payout adapter.</p></div><a className="button secondary" href="#/sources">Understand eligibility <Icon name="arrow" size={17} /></a></section>
+    <section className="how-section"><div className="section-heading"><div><p className="eyebrow">SAME LOCK. MORE CHOICE.</p><h2>Your next move starts here.</h2></div><p>Compare a borrowing offer with a sale.<br />The source keeps the original maturity.</p></div><Steps /></section>
+    <section className="source-callout"><span className="callout-icon"><Icon name="shield" size={30} /></span><div><p className="eyebrow">SUPPORTED PAYOUT RIGHTS</p><h2>A locked position needs the right adapter.</h2><p>Many DEX positions are not transferable. Securing or assigning the payout right needs a supported adapter before borrowing or selling is possible.</p></div><a className="button secondary" href="#/sources">Understand eligibility <Icon name="arrow" size={17} /></a></section>
   </div>;
 }
 
 function Steps() {
   return <div className="steps-grid">{[
-    ["01", "An existing payout right", "The seller owns a supported fixed-maturity position. Its principal is already held by its source vault.", "lock"],
-    ["02", "An early-exit price", "The seller lists the payout right below its principal. A buyer funds the price and receives the original NFT.", "wallet"],
-    ["03", "The original payout", "After delivery, the seller withdraws the sale proceeds. At maturity, the buyer claims the full principal from its source.", "calendar"],
+    ["01", "Start with your position", "Connect the wallet that owns an eligible payout right. Lockpad checks its source, principal, and original maturity.", "lock"],
+    ["02", "Compare your two options", "Accept a funded borrowing offer, or list the payout right at your chosen sale price when you need a different amount.", "wallet"],
+    ["03", "Keep the original promise", "Repay a loan to recover the right, or transfer it to a buyer in a completed sale. Principal stays at the source until maturity.", "calendar"],
   ].map(([number, title, text, icon]) => <article className="step" key={number}><div><span>{number}</span><Icon name={icon} size={23} /></div><h3>{title}</h3><p>{text}</p></article>)}</div>;
 }
 
@@ -219,23 +238,25 @@ function PositionDetail({ lp, detail, openAccount, ask }) {
   </section>;
 }
 
-function Portfolio({ lp, current, openAccount, sell, ask }) {
+function Portfolio({ lp, current, openAccount, sell, borrow, ask }) {
   const holdings = current ? lp.data.holdings : [];
   const sellerListings = current ? lp.data.sellerListings.filter(listing => ["Open", "Buying", "Canceling"].includes(listing.status)) : [];
   const ledger = current ? lp.data.ledger : { available: "0", proceeds: "0" };
   return <section className="inner-page">
-    <PageHeading eyebrow="YOUR PAYOUT RIGHTS" title="Your positions. Your next move." action={lp.account && <button className="button secondary" disabled={!lp.ready} onClick={() => ask("create", {})}><Icon name="plus" size={17} /> Create test position</button>}>List an eligible lock, claim a matured payout, or withdraw a completed sale.</PageHeading>
+    <PageHeading eyebrow="YOUR PAYOUT RIGHTS" title="Your positions. Your next move." action={lp.account && <button className="button secondary" disabled={!lp.ready} onClick={() => ask("create", {})}><Icon name="plus" size={17} /> Create test position</button>}>Borrow against an eligible position, choose a sale price, manage your loan, or claim a matured payout.</PageHeading>
     {!lp.account ? <Empty icon="wallet" title="Connect to see your positions" action={<button className="button primary" disabled={!lp.data.ready} onClick={openAccount}>{localDemo ? "Choose a local test wallet" : "Connect wallet"}<Icon name="wallet" size={17} /></button>}>Your holdings and market balances are checked for the account you choose.</Empty>
       : !current || !lp.data.ready ? <div className="loading-panel" role="status">{lp.error ? "Your balances are unavailable until the connection is restored." : "Checking your positions and balances…"}</div>
         : <><div className="balances-grid">
           <article className="balance-card"><span><Icon name="wallet" size={17} /> Wallet balance</span><Amount value={lp.data.tokenBalance} /><button className="text-button" disabled={!lp.ready} onClick={lp.faucet}>Get test tokens <Icon name="plus" size={15} /></button></article>
           <article className="balance-card"><span><Icon name="shield" size={17} /> Unused market funds</span><Amount value={ledger.available} /><button className="text-button" disabled={!lp.ready || BigInt(ledger.available) === 0n || Boolean(ledger.withdrawal)} onClick={() => ask("withdraw", { balanceKind: "balance", value: ledger.available })}>Return to wallet <Icon name="arrow" size={15} /></button></article>
           <article className="balance-card"><span><Icon name="check" size={17} /> Sale proceeds</span><Amount value={ledger.proceeds} /><button className="text-button" disabled={!lp.ready || BigInt(ledger.proceeds) === 0n || Boolean(ledger.withdrawal)} onClick={() => ask("withdraw", { balanceKind: "proceeds", value: ledger.proceeds })}>Withdraw proceeds <Icon name="arrow" size={15} /></button></article>
+          {lp.environment?.pool && <article className="balance-card"><span><Icon name="lock" size={17} /> Remaining collateral payout</span><Amount value={lp.data.loanLedger.surplus} /><button className="text-button" disabled={!lp.ready || BigInt(lp.data.loanLedger.surplus) === 0n || Boolean(lp.data.loanLedger.withdrawal)} onClick={() => ask("withdrawSurplus", { value: lp.data.loanLedger.surplus })}>Withdraw remaining payout<Icon name="arrow" size={15} /></button></article>}
         </div>{ledger.withdrawal && <p className="connection-banner" role="status">A withdrawal is pending. Inspect its receipt in Activity before taking another payout action.</p>}
+        <LoanList lp={lp} ask={ask} />
         <div className="section-heading compact-heading"><h2>In your wallet <span className="count-pill">{holdings.length}</span></h2><button className="text-button" disabled={lp.busy} onClick={lp.refresh}><Icon name="refresh" size={16} /> Refresh positions</button></div>
         {holdings.length ? <div className="holdings-list">{holdings.map(position => <article className="holding-row" data-position-id={position.token_id} key={`${position.source_id}:${position.token_id}`}><span className="token-icon"><Icon name="lock" size={20} /></span><div className="holding-info"><strong>Reference position #{position.token_id}</strong><span>{position.status === "Redeemed" ? "Payout claimed" : position.status === "Redeeming" ? "Maturity payout settling" : timeLeft(position.unlock_at, lp.now)} · {maturityDate(position.unlock_at)}</span></div><Amount value={position.principal} />
           {position.status === "Active" && !position.transfer_pending ? timestampMs(position.unlock_at) <= lp.now ? <button className="button primary" disabled={!lp.ready} onClick={() => ask("redeem", { position })}>Claim payout <Icon name="arrow" size={16} /></button>
-            : <button className="button secondary" disabled={!lp.ready} onClick={() => sell(position)}>List position <Icon name="northeast" size={16} /></button>
+            : <div className="holding-actions"><button className="button primary" disabled={!lp.ready || !lp.data.poolConfig} onClick={() => borrow(position)}>Borrow<Icon name="arrow" size={16} /></button><button className="button secondary" disabled={!lp.ready} onClick={() => sell(position)}>List position <Icon name="northeast" size={16} /></button></div>
             : <span className="status">{position.status === "Redeemed" ? "Redeemed" : "Settling"}</span>}
         </article>)}</div> : <Empty title="No payout rights in this wallet" action={<a className="button secondary" href="#/marketplace">Explore the marketplace</a>}>Purchase a supported position or create a reference test position for this demo.</Empty>}
         {sellerListings.length > 0 && <><div className="section-heading compact-heading"><h2>Your listings <span className="count-pill">{sellerListings.length}</span></h2><p>The marketplace holds these payout rights.</p></div><div className="position-grid">{sellerListings.map(listing => <PositionCard key={listing.id} listing={listing} now={lp.now} />)}</div></>}
@@ -305,7 +326,7 @@ function Activity({ lp }) {
   const recent = [...lp.data.activity].reverse();
   const journal = lp.journal.filter(item => !lp.account || item.signer === lp.account);
   return <section className="inner-page">
-    <PageHeading eyebrow="A RECORD YOU CAN CHECK" title="Every move leaves a receipt." action={localDemo && <a className="button secondary" href="/api/demo/evidence" target="_blank" rel="noreferrer">View this run’s receipts <Icon name="receipt" size={17} /></a>}>Completed market transfers and this browser’s wallet actions. Local Sandbox activity is a builder test, not independent adoption.</PageHeading>
+    <PageHeading eyebrow="A RECORD YOU CAN CHECK" title="Every move leaves a receipt." action={localDemo && <a className="button secondary" href="/api/demo/evidence" target="_blank" rel="noreferrer">View this run’s receipts <Icon name="receipt" size={17} /></a>}>Borrowing, repayment, collateral returns, market transfers, and this browser’s wallet actions. Local Sandbox activity is a builder test.</PageHeading>
     <div className="section-heading compact-heading"><h2>Wallet actions</h2><span className="subtle">{lp.account ? shortAccount(lp.account) : "This browser"}</span></div>
     {journal.length ? <div className="activity-list">{journal.map(item => <article className="activity-row" key={item.id}><span className="activity-icon"><Icon name={item.state === "Confirmed" ? "check" : "receipt"} size={20} /></span><div className="activity-copy"><strong>{item.label}</strong><small>{item.signer} · {new Date(item.createdAt).toLocaleString("en-US")}</small>{item.error && <p>{item.error}</p>}</div><span className={`status ${item.state === "Confirmed" ? "" : "status-pending"}`}>{item.state}</span><div className="activity-actions">{item.hash && item.state !== "Confirmed" && <button className="text-button" disabled={lp.busy} onClick={() => lp.reviewReceipt(item)}>Check receipt</button>}{item.receipt && <a className="text-link" href={item.receipt} target="_blank" rel="noreferrer">Receipt <Icon name="northeast" size={15} /></a>}</div></article>)}</div>
       : <Empty icon="receipt" title="No wallet actions recorded here">Your approvals and transaction receipts will appear after you take an action. Reloading does not replay transactions.</Empty>}
@@ -317,14 +338,14 @@ function Activity({ lp }) {
 
 function Sources({ lp }) {
   return <section className="inner-page sources-page">
-    <PageHeading eyebrow="WHAT YOU’RE ACTUALLY BUYING" title="A payout right, with rules attached.">A transferable NFT is useful only when its owner can execute the original claim. The source contract defines that right.</PageHeading>
+    <PageHeading eyebrow="PROPOSED WORK BEFORE MAINNET" title="A payout right, with rules attached.">Borrowing or selling needs an enforceable claim to the original payout. The source defines that right; a displayed position alone cannot provide it.</PageHeading>
     <Steps />
     <div className="section-heading compact-heading"><h2>Source eligibility</h2><span className="subtle">One verified reference adapter</span></div>
     <div className="source-list"><article className="source-entry"><span className="source-entry-icon"><Icon name="lock" size={25} /></span><div><h3>Separate reference vault</h3><p>A fixed principal, an original maturity, and a transferable NEP-171 payout NFT. The marketplace checks the authoritative source and accepts only its configured payment token.</p>{lp.environment?.vault && <code>{lp.environment.vault}</code>}</div><span className="status">{lp.data.ready ? "Supported in this run" : "Reference adapter"}</span></article>
-      <article className="source-entry"><span className="source-entry-icon"><Icon name="shield" size={25} /></span><div><h3>Rhea and other locked DeFi positions</h3><p>Not integrated. Each specific position needs proof of seller authority, transferability under its locker rules, payout execution, and payment recovery. A protocol’s ordinary NFT transfer support alone is insufficient.</p></div><span className="status status-muted">Verification required</span></article>
-      <article className="source-entry"><span className="source-entry-icon"><Icon name="info" size={25} /></span><div><h3>Creator fees and account-bound locks</h3><p>Fee reassignment is a different right from locked principal. An account-bound or administrator-controlled lock cannot be sold by an ordinary owner through this marketplace.</p></div><span className="status status-muted">Not supported</span></article>
+      <article className="source-entry"><span className="source-entry-icon"><Icon name="shield" size={25} /></span><div><h3>Non-transferable DEX positions</h3><p>Many platforms bind a locked position to an account. Lockpad needs a protocol-specific adapter, an approved beneficiary assignment, or an escrow wrapper that controls redemption before that position can support a loan or sale.</p></div><span className="status status-muted">Adapter required</span></article>
+      <article className="source-entry"><span className="source-entry-icon"><Icon name="info" size={25} /></span><div><h3>Third-party integrations before mainnet</h3><p>Each source needs verified ownership, secure payout control, valuation and loan terms, failure recovery, and review. The current local prototype demonstrates the proposed borrow-or-sell flow using its reference vault.</p></div><span className="status status-muted">Planned work</span></article>
     </div>
-    <section className="risk-section"><h2>Know the limits before a purchase.</h2><div className="risk-grid"><article><h3>Discounts are not a guarantee</h3><p>A 1,000 TUSD payout bought for 920 has an 8% discount and an 8.70% gross return on price. Gas and storage reduce the difference. Neither figure is annualized.</p></article><article><h3>Delivery and payment have recovery rules</h3><p>Funding is deposited before purchase. Seller proceeds are released only after NFT delivery. An unresolved delivery keeps funds reserved until the source receipt is reconciled after its deadline.</p></article><article><h3>This is an unaudited prototype</h3><p>Only test tokens are supported. Contracts retain upgrade keys. Ordinary failed token transfers restore balances, but an arbitrary callback failure can leave a withdrawal or maturity claim pending and require technical recovery.</p></article></div></section>
+    <section className="risk-section"><h2>Know your terms before choosing.</h2><div className="risk-grid"><article><h3>A borrowing offer has a limit</h3><p>The prototype offers up to 65% of fixed principal, bounded by actual pool funds, with a one-time 2% fee. Repay by original maturity to recover the payout right. If unpaid, only the amount due is retained and the remaining payout is credited to you.</p></article><article><h3>A listing needs a buyer</h3><p>You set a discounted price. Seller proceeds are released after the original NFT reaches the buyer. A listing does not guarantee demand, and a pending delivery keeps its payment reserved for receipt reconciliation.</p></article><article><h3>Further work comes before mainnet</h3><p>The reference source has no yield strategy. All tokens have no monetary value. The contracts are unaudited and retain upgrade keys; arbitrary payout callback failure can leave a pending operation requiring technical recovery. Production adapters and risk controls still need development.</p></article></div></section>
     <a className="button primary" href="#/marketplace">Explore supported positions <Icon name="arrow" size={17} /></a>
   </section>;
 }

@@ -1,0 +1,429 @@
+{
+  "checkedAt": "2026-11-13T22:09:08.832Z",
+  "scope": "Continuation of native NEAR DEX position research: original cache integrity, Spin deployed vault and docs, Tonic source, DeltaTrade docs",
+  "networkTransactions": 0,
+  "transferExecutionVerified": false,
+  "originalEvidence": {
+    "file": "near-dex-research-2026-11-13.json",
+    "matchedSourceFiles": 13,
+    "matchedSuccessfulWasmSnapshots": 5,
+    "mismatches": []
+  },
+  "recommendation": "Rhea DCL NFTs first; Rhea/Jumbo classic MFT shares next. Spin option-vault shares are a conditional native delayed-withdrawal candidate requiring operational and recipient-redemption proof.",
+  "contracts": [
+    {
+      "accountId": "v1.vault.spin-fi.near",
+      "network": "mainnet",
+      "blockHeight": 224423768,
+      "blockHash": "96RMgeQErx3T4T4vDS54fBKcM3NsZukgvwAXhkNzdpoH",
+      "codeHash": "EJpPAk6Fd3WFYVTiyJ5VEMqG8eAXC4iLLTPBhqrkKaxd",
+      "wasmSha256": "c5b861080558ff8174f00b13d44298a7830a22ce8c9e15e99f09e9a8441df05e",
+      "wasmBytes": 967317,
+      "exportedMethods": [
+        "new",
+        "get_owner",
+        "storage_deposit",
+        "get_storage",
+        "storage_withdraw",
+        "vault_epoch_metadata",
+        "vault_get_capacity",
+        "batch_mft_balance_of",
+        "vault_last_epoch_id",
+        "vault_count",
+        "vault_get_all",
+        "vault_metadata",
+        "vault_toggle_pause",
+        "vault_create",
+        "vault_update_settings",
+        "vault_forward_epoch",
+        "vault_cancel_deposit",
+        "vault_withdraw",
+        "vault_takeout",
+        "vault_cancel_withdraw",
+        "vault_view_pending_deposit",
+        "vault_view_pending_withdraw",
+        "vault_view_takeout",
+        "mft_balance_of",
+        "mft_total_supply",
+        "mft_metadata",
+        "mft_transfer",
+        "mft_transfer_call",
+        "oft_metadata",
+        "fetch_feeds",
+        "feeds_number",
+        "oft_number",
+        "fetch_ofts",
+        "create_price_feed",
+        "update_price",
+        "oft_execute",
+        "oft_withdraw",
+        "oft_takeout",
+        "oft_is_expired",
+        "auction_get_count",
+        "auction_get_all",
+        "auction_get_by_id",
+        "auction_get_currencies_count",
+        "auction_get_currencies",
+        "auction_get_orderbook",
+        "auction_get_deposits",
+        "auction_withdraw",
+        "auction_place_bid",
+        "auction_batch",
+        "auction_get_order",
+        "auction_get_orders",
+        "auction_cancel_order",
+        "auction_cancel_orders",
+        "auction_drop_orders",
+        "ft_on_transfer",
+        "create_ft_metadata_callback",
+        "mft_resolve_transfer",
+        "vault_takeout_callback",
+        "vault_cancel_deposit_callback",
+        "auction_withdraw_callback",
+        "oft_execute_callback",
+        "oft_withdraw_callback",
+        "oft_takeout_callback",
+        "update_price_callback",
+        "price_oracle_update_price_callback"
+      ]
+    }
+  ],
+  "views": [
+    {
+      "accountId": "v1.vault.spin-fi.near",
+      "method": "vault_get_all",
+      "args": {
+        "limit": "5",
+        "offset": "0"
+      },
+      "blockHeight": 224423856,
+      "blockHash": "HsNyKh966Nx7wmnH9FAyurCLSjosuB9KmucVa3UF2tBA",
+      "value": [
+        {
+          "id": "1",
+          "invariant": {
+            "option_type": "Call",
+            "underlying_asset": "wrap.near",
+            "execution_asset": "wrap.near"
+          },
+          "time": {
+            "period": "604800000000000",
+            "period_offset": "126000000000000",
+            "option_expiration": "604800000000000",
+            "auction_start": "600000000000",
+            "auction_duration": "1200000000000"
+          },
+          "pricing": {
+            "strike_price": "10500000000",
+            "auction_min_price": "100000000000000000000",
+            "price_feed_id": "8"
+          },
+          "fee": {
+            "performance_fee_numerator": "50000000000",
+            "management_fee_numerator": "0",
+            "fee_denominator": "1000000000000",
+            "collected_performance_fee": "650218273040042734741092236",
+            "collected_management_fee": "0"
+          },
+          "capacity": {
+            "max": "200000000000000000000000000000",
+            "min": "0"
+          }
+        },
+        {
+          "id": "2",
+          "invariant": {
+            "option_type": "Put",
+            "underlying_asset": "wrap.near",
+            "execution_asset": "a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.factory.bridge.near"
+          },
+          "time": {
+            "period": "604800000000000",
+            "period_offset": "126000000000000",
+            "option_expiration": "604800000000000",
+            "auction_start": "600000000000",
+            "auction_duration": "1200000000000"
+          },
+          "pricing": {
+            "strike_price": "10000000000",
+            "auction_min_price": "100000000000000000000",
+            "price_feed_id": "8"
+          },
+          "fee": {
+            "performance_fee_numerator": "50000000000",
+            "management_fee_numerator": "0",
+            "fee_denominator": "1000000000000",
+            "collected_performance_fee": "190094338",
+            "collected_management_fee": "0"
+          },
+          "capacity": {
+            "max": "200000000000",
+            "min": "0"
+          }
+        },
+        {
+          "id": "3",
+          "invariant": {
+            "option_type": "Call",
+            "underlying_asset": "meta-pool.near",
+            "execution_asset": "meta-pool.near"
+          },
+          "time": {
+            "period": "604800000000000",
+            "period_offset": "126000000000000",
+            "option_expiration": "604800000000000",
+            "auction_start": "600000000000",
+            "auction_duration": "1200000000000"
+          },
+          "pricing": {
+            "strike_price": "15500000000",
+            "auction_min_price": "100000000000000000000",
+            "price_feed_id": "9"
+          },
+          "fee": {
+            "performance_fee_numerator": "50000000000",
+            "management_fee_numerator": "0",
+            "fee_denominator": "1000000000000",
+            "collected_performance_fee": "257957406787289514920502917",
+            "collected_management_fee": "0"
+          },
+          "capacity": {
+            "max": "200000000000000000000000000000",
+            "min": "0"
+          }
+        },
+        {
+          "id": "4",
+          "invariant": {
+            "option_type": "Call",
+            "underlying_asset": "aurora",
+            "execution_asset": "aurora"
+          },
+          "time": {
+            "period": "604800000000000",
+            "period_offset": "126000000000000",
+            "option_expiration": "604800000000000",
+            "auction_start": "600000000000",
+            "auction_duration": "1200000000000"
+          },
+          "pricing": {
+            "strike_price": "22000000000000",
+            "auction_min_price": "100000000000000000000",
+            "price_feed_id": "10"
+          },
+          "fee": {
+            "performance_fee_numerator": "50000000000",
+            "management_fee_numerator": "0",
+            "fee_denominator": "1000000000000",
+            "collected_performance_fee": "192560049810490354",
+            "collected_management_fee": "0"
+          },
+          "capacity": {
+            "max": "200000000000000000000",
+            "min": "0"
+          }
+        },
+        {
+          "id": "5",
+          "invariant": {
+            "option_type": "Call",
+            "underlying_asset": "2260fac5e5542a773aa44fbcfedf7c193bc2c599.factory.bridge.near",
+            "execution_asset": "2260fac5e5542a773aa44fbcfedf7c193bc2c599.factory.bridge.near"
+          },
+          "time": {
+            "period": "604800000000000",
+            "period_offset": "126000000000000",
+            "option_expiration": "604800000000000",
+            "auction_start": "600000000000",
+            "auction_duration": "1200000000000"
+          },
+          "pricing": {
+            "strike_price": "740000000000000",
+            "auction_min_price": "100000000000000000000",
+            "price_feed_id": "11"
+          },
+          "fee": {
+            "performance_fee_numerator": "50000000000",
+            "management_fee_numerator": "0",
+            "fee_denominator": "1000000000000",
+            "collected_performance_fee": "122683",
+            "collected_management_fee": "0"
+          },
+          "capacity": {
+            "max": "1000000000",
+            "min": "1000000"
+          }
+        }
+      ]
+    },
+    {
+      "accountId": "v1.vault.spin-fi.near",
+      "method": "vault_metadata",
+      "args": {
+        "id": "1",
+        "vault_id": "1"
+      },
+      "blockHeight": 224423964,
+      "blockHash": "Bvz4SqFLek4us1uxMb9qah7FJm5nNn2MmuPeF1YB6zvd",
+      "value": {
+        "id": "1",
+        "invariant": {
+          "option_type": "Call",
+          "underlying_asset": "wrap.near",
+          "execution_asset": "wrap.near"
+        },
+        "time": {
+          "period": "604800000000000",
+          "period_offset": "126000000000000",
+          "option_expiration": "604800000000000",
+          "auction_start": "600000000000",
+          "auction_duration": "1200000000000"
+        },
+        "pricing": {
+          "strike_price": "10500000000",
+          "auction_min_price": "100000000000000000000",
+          "price_feed_id": "8"
+        },
+        "fee": {
+          "performance_fee_numerator": "50000000000",
+          "management_fee_numerator": "0",
+          "fee_denominator": "1000000000000",
+          "collected_performance_fee": "650218273040042734741092236",
+          "collected_management_fee": "0"
+        },
+        "capacity": {
+          "max": "200000000000000000000000000000",
+          "min": "0"
+        }
+      }
+    },
+    {
+      "accountId": "v1.vault.spin-fi.near",
+      "method": "vault_last_epoch_id",
+      "args": {
+        "id": "1",
+        "vault_id": "1"
+      },
+      "blockHeight": 224423964,
+      "blockHash": "Bvz4SqFLek4us1uxMb9qah7FJm5nNn2MmuPeF1YB6zvd",
+      "value": "153"
+    },
+    {
+      "accountId": "v1.vault.spin-fi.near",
+      "method": "vault_epoch_metadata",
+      "args": {
+        "id": "1",
+        "vault_id": "1",
+        "epoch_id": "153"
+      },
+      "blockHeight": 224424048,
+      "blockHash": "CMHYVhTm6xND3hemvL9XGKm3cz4s8Huunj74Fc2DXDj1",
+      "value": {
+        "status": "NotStarted",
+        "start_amount": "2979511910013155144731132225",
+        "end_amount": "0",
+        "shares_on_start": "32945646030748023200148039596",
+        "withdraw_shares": "0",
+        "deposit_amount": "0",
+        "performance_fee": "0",
+        "management_fee": "0",
+        "metadata": {
+          "status": "NotStarted",
+          "auction_id": null,
+          "oft_id": null,
+          "minted_quantity": null,
+          "bootstrap_params": null,
+          "unrealized_quantity": null,
+          "income": null
+        }
+      }
+    }
+  ],
+  "sourceSnapshots": [
+    {
+      "repository": "spin-fi/near-mft-interface",
+      "commit": "5f82ec9a32f35eb24393f899df6e0749ebacb559",
+      "files": [
+        {
+          "cachedFile": "spin-mft.rs",
+          "sha256": "98d2b65f8f25db2be7a5065c4fc865ff5c82a0d9e8a1854b7f7d0050a54ba174"
+        }
+      ]
+    },
+    {
+      "repository": "spin-fi/near-defi-llama",
+      "commit": "ac4479741ffa14e916fe821419d9c57ad4acde3a",
+      "files": [
+        {
+          "cachedFile": "spin-vault.js",
+          "sha256": "3e5f2564c82962828ee38c0191a69a9f516a65b23bc7f7d537d526b1c22d229f"
+        }
+      ]
+    },
+    {
+      "repository": "tonic-foundation/tonic-core",
+      "commit": "189cc567efe9bf1736b574a6a2ed3eaedda4a457",
+      "files": [
+        {
+          "cachedFile": "tonic-account.rs",
+          "sha256": "21e1a7e9fe1c644d3c550a7c00723747961a3fe061df467300334ce9a66bd078"
+        },
+        {
+          "cachedFile": "tonic-readme.md",
+          "sha256": "020e196612b375320f0a8280d8252edaef1d62f6baa91ef9b898398079f5e82a"
+        }
+      ]
+    }
+  ],
+  "documents": [
+    {
+      "url": "https://docs.spin.fi/products/dovs.md",
+      "cachedFile": "spin-dovs.md",
+      "sha256": "038f18854786cb6ad706613e2162cda21a489d4a21b5d08653e3c44db8006ddc"
+    },
+    {
+      "url": "https://docs.spin.fi/products/dovs/covered-call-strategy.md",
+      "cachedFile": "spin-covered-calls.md",
+      "sha256": "b2cf14d0ba421cda0f21a5339fe6293139ee29caeaddf61e2859ae083014b01e"
+    },
+    {
+      "url": "https://docs.spin.fi/tech-documentation/sc-methods-and-api.md",
+      "cachedFile": "spin-api.md",
+      "sha256": "bdc30c0b7e481d9ca42915a266571e4b54e1a282286369b35a88a35ec4059804"
+    },
+    {
+      "url": "https://docs.api.spin.fi/",
+      "cachedFile": "spin-developer.html",
+      "sha256": "48188db0821d4f8e912c184fe4bbfb45b67fd45654a9b4d0ca6f54d58dffd801"
+    },
+    {
+      "url": "https://docs.deltatrade.ai/sdk/smartcontract/grid.md",
+      "cachedFile": "delta-grid.md",
+      "sha256": "2d686a53b993aafbd25bdea1ed71f3afb675a838887ec399d7dde32213f574b9"
+    },
+    {
+      "url": "https://docs.deltatrade.ai/activities/deltadisk-nft.md",
+      "cachedFile": "delta-disk.md",
+      "sha256": "c99e15fba082b5cc4c9bb301477bd415c98107ae80acf32a56b8768a3665ba37"
+    },
+    {
+      "url": "https://docs.deltatrade.ai/user-guide/introduction-to-deltabot-functional-modules/vaults.md",
+      "cachedFile": "delta-vault.md",
+      "sha256": "89230b97987bab3cf7685d4d4ded30fa8576f83b1fb4b5b367866b92109448a0"
+    }
+  ],
+  "siteChecks": [
+    {
+      "url": "https://vault.spin.fi/",
+      "httpStatus": 402,
+      "interpretation": "Current website unavailable in this request; not proof of protocol shutdown."
+    }
+  ],
+  "observations": [
+    "Spin documents vault-share minting and seven-day epochs with withdrawal at the next epoch. Its deployed vault exports MFT transfer, balance, metadata and withdrawal/takeout methods.",
+    "Vault 1 reported last epoch 153 and epoch metadata with NotStarted status. No shutdown, pause status, timestamp of last progression, or successful new-holder redemption is established by this query.",
+    "Spin vault-share token IDs and transfer restrictions still need verification. Active shares, pending deposits, pending withdrawals and option tokens may have distinct ownership rules.",
+    "Tonic source associates open orders and balances with accounts. No assignable position was confirmed by this limited source screen; deployed contract behavior was not audited.",
+    "DeltaTrade Grid contract docs say Coming Soon. DeltaDisk NFTs provide reward multipliers, with no trading-position withdrawal right established by the retrieved pages."
+  ]
+}

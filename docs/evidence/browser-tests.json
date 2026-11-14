@@ -2,8 +2,13 @@
   "network": "isolated local NEAR Sandbox",
   "actors": "Temporary builder-controlled wallets; no independent adoption",
   "checks": [
-    "Home separates illustrative trade cards from actual local listings",
+    "Home distinguishes illustrative borrowing and sale amounts from actual local listings",
     "Search, maturity, exact discount filters and sorting use real market data",
+    "The borrowing quote enforces the actual collateral limit and review never signs",
+    "A changed funded-pool quote is rejected before the original payout NFT moves",
+    "A double press borrows once, keeps principal and maturity unchanged, and reload cannot reborrow",
+    "Wallet changes clear borrowing offers, and repayment returns the same source payout NFT",
+    "The sale alternative carries the quoted position directly into the listing form",
     "Review dialogs trap keyboard focus, restore focus on Escape and never auto-submit",
     "Seller lists an existing payout NFT without moving its principal or maturity",
     "Import rejects a payout right the connected wallet does not own",
@@ -14,16 +19,20 @@
     "A real cancellation between funding and buy leaves a recoverable balance; UI withdraws it",
     "A failed action keeps its own receipt; checking it never replays a transaction",
     "Marketplace token holdings exactly cover all remaining payment liabilities",
-    "Seven app routes fit desktop, tablet, 390px and 320px without horizontal overflow",
+    "Eight app routes fit desktop, tablet, 390px and 320px; hero copy and comparison never overlap",
     "Mobile navigation closes on selection and reduced motion removes card movement",
     "Production build works under /timeshift/ and offers no fabricated or unconfigured trades"
   ],
   "errors": [],
   "screenshots": [
     "docs/screenshots/home-desktop.png",
+    "docs/screenshots/borrow-desktop.png",
+    "docs/screenshots/loan-active-desktop.png",
+    "docs/screenshots/loan-repaid-desktop.png",
     "docs/screenshots/position-desktop.png",
     "docs/screenshots/home-768.png",
     "docs/screenshots/home-390.png",
+    "docs/screenshots/borrow-mobile.png",
     "docs/screenshots/marketplace-mobile.png",
     "docs/screenshots/positions-mobile.png",
     "docs/screenshots/sell-mobile.png",
@@ -35,7 +44,7 @@
     {
       "accountId": "alice.test.near",
       "name": "Alice",
-      "role": "Seller · has an existing 5-minute lock"
+      "role": "Position owner · can borrow or sell"
     },
     {
       "accountId": "bob.test.near",
@@ -45,14 +54,58 @@
     {
       "accountId": "nora.test.near",
       "name": "Nora",
-      "role": "Seller · listed reference positions"
+      "role": "Fixture lender · listed reference positions"
     }
   ],
+  "borrowing": {
+    "loan": {
+      "id": "1",
+      "borrower_id": "alice.test.near",
+      "source_id": "vault.test.near",
+      "token_id": "1",
+      "collateral": "1000000000",
+      "source_created_at": "1794609108100789507",
+      "unlock_at": "1794609408100789507",
+      "amount": "650000000",
+      "fee": "13000000",
+      "repay_amount": "663000000",
+      "status": "Active",
+      "created_at": "1794609162040492995",
+      "attempt": "1",
+      "valid_until": "1794609284457900125",
+      "return_kind": null,
+      "completed_at": null
+    },
+    "original": {
+      "adapter_version": "lockpad-reference-v1",
+      "token_id": "1",
+      "owner_id": "alice.test.near",
+      "asset_id": "token.test.near",
+      "principal": "1000000000",
+      "created_at": "1794609108100789507",
+      "unlock_at": "1794609408100789507",
+      "status": "Active",
+      "transfer_pending": false
+    },
+    "repaid": {
+      "adapter_version": "lockpad-reference-v1",
+      "token_id": "1",
+      "owner_id": "alice.test.near",
+      "asset_id": "token.test.near",
+      "principal": "1000000000",
+      "created_at": "1794609108100789507",
+      "unlock_at": "1794609408100789507",
+      "status": "Active",
+      "transfer_pending": false
+    },
+    "actualDisbursement": "650000000",
+    "actualRepayment": "663000000"
+  },
   "maturity": {
     "method": "Sandbox fastForward(600); source maturity unchanged",
-    "beforeTime": "1794592220975944637",
-    "afterTime": "1794592999421483698",
-    "originalUnlockAt": "1794592459337347060"
+    "beforeTime": "1794609197748690051",
+    "afterTime": "1794609976192527143",
+    "originalUnlockAt": "1794609408100789507"
   },
   "accounting": {
     "available": "0",
@@ -69,8 +122,8 @@
       "owner_id": "alice.test.near",
       "asset_id": "token.test.near",
       "principal": "1000000000",
-      "created_at": "1794592159337347060",
-      "unlock_at": "1794592459337347060",
+      "created_at": "1794609108100789507",
+      "unlock_at": "1794609408100789507",
       "status": "Active",
       "transfer_pending": false
     },
@@ -80,8 +133,8 @@
       "owner_id": "bob.test.near",
       "asset_id": "token.test.near",
       "principal": "1000000000",
-      "created_at": "1794592159337347060",
-      "unlock_at": "1794592459337347060",
+      "created_at": "1794609108100789507",
+      "unlock_at": "1794609408100789507",
       "status": "Active",
       "transfer_pending": false
     },
@@ -91,8 +144,8 @@
       "owner_id": "bob.test.near",
       "asset_id": "token.test.near",
       "principal": "1000000000",
-      "created_at": "1794592159337347060",
-      "unlock_at": "1794592459337347060",
+      "created_at": "1794609108100789507",
+      "unlock_at": "1794609408100789507",
       "status": "Redeemed",
       "transfer_pending": false
     },
@@ -104,6 +157,13 @@
     {
       "width": 1440,
       "path": "/",
+      "viewport": 1440,
+      "content": 1440,
+      "heroContentSeparate": true
+    },
+    {
+      "width": 1440,
+      "path": "/borrow",
       "viewport": 1440,
       "content": 1440
     },
@@ -146,6 +206,13 @@
     {
       "width": 768,
       "path": "/",
+      "viewport": 768,
+      "content": 768,
+      "heroContentSeparate": true
+    },
+    {
+      "width": 768,
+      "path": "/borrow",
       "viewport": 768,
       "content": 768
     },
@@ -188,6 +255,13 @@
     {
       "width": 390,
       "path": "/",
+      "viewport": 390,
+      "content": 390,
+      "heroContentSeparate": true
+    },
+    {
+      "width": 390,
+      "path": "/borrow",
       "viewport": 390,
       "content": 390
     },
@@ -230,6 +304,13 @@
     {
       "width": 320,
       "path": "/",
+      "viewport": 320,
+      "content": 320,
+      "heroContentSeparate": true
+    },
+    {
+      "width": 320,
+      "path": "/borrow",
       "viewport": 320,
       "content": 320
     },
@@ -271,14 +352,18 @@
     }
   ],
   "status": "PASS",
-  "executedAt": "2026-11-13T17:51:04.187Z",
+  "executedAt": "2026-11-13T22:34:05.502Z",
   "contractBuild": {
-    "builtAt": "2026-11-13T16:34:59.404Z",
+    "builtAt": "2026-11-13T21:17:07.476Z",
     "toolchain": "rustc 1.99.1 (58cf8f9c3 2026-10-13); Wasm MVP; build-std=std,panic_abort",
     "contracts": {
       "lockpad_marketplace.wasm": {
         "bytes": 577605,
         "sha256": "bfd986977195a2ece79a6d34004b48e2dc990a49bd6493d2b8f862b6a0f02dd6"
+      },
+      "lockpad_lending_pool.wasm": {
+        "bytes": 620383,
+        "sha256": "c8f84e9770d65b084121c5a4271414f05edbb4b9830a95ce2d58264af7bf08ff"
       },
       "lockpad_reference_vault.wasm": {
         "bytes": 671404,
@@ -290,29 +375,34 @@
       }
     },
     "sources": {
-      "Cargo.toml": "91ed9dd0f352d40b5b865dcb652f297acdddbb820bffb2da2f8b9d7717bd787e",
-      "Cargo.lock": "f3f08f42a9644ac6c3bf4e15804c106afc5469eb11d75b87c5762fb7ccc65022",
+      "Cargo.toml": "46dea87be7eae90a36d3716ec416adb376b6a548f095f061ed53045c6d85b2e8",
+      "Cargo.lock": "d0b98e3f91d3bf866ef0d9e901b395fa86e2beb193a82131c3a5bcceb5cdc555",
       "rust-toolchain.toml": "e39008d2583f8860a4cbebefb0e8703ac6c8ab3384fb585b16dc802084bd2b1f",
       ".cargo/config.toml": "cfcd2dbebb7de4af0de6c27156fb474531407206a4f4856743d211675fccbc5d",
       "contract/Cargo.toml": "721b5c7e41e6422e7607195271fc521e785a717478a5f464855bde7b1f7c3e5d",
       "contract/src/lib.rs": "f0ed0cc923a6b8d3f41620e59dac7e86552548d4e391c28e4ebab8eff1f8658c",
       "marketplace/Cargo.toml": "424c96e2429f2def9bd9ac49cf1062764d929ca3b5723053405632e18c05bff5",
       "marketplace/src/lib.rs": "ac8b6820b8c13218ec97aa7da0061d838ca880204b3b5c56e9d37b58401af921",
+      "lending/Cargo.toml": "8e6f2a8bea761b05a17e017bc5b8d0e73adf2f3aef9860898f3b64d0ef9f3fc1",
+      "lending/src/lib.rs": "21b095036cd8b3149c284b5ae0ad20cab4e9d1b3eff27c4e355f0d812f372a21",
       "token/Cargo.toml": "f95cd7fc8c3b531c07f91f6a9e95b22bbc0807424d30c0786061bf6619e6e9ed",
       "token/src/lib.rs": "488b0ef78a138e88aaea15fc264d8a137ea3a61e7539c8b9c40f860afa721c2b"
     }
   },
   "sources": {
-    "src/app.jsx": "78c8ace2865ec8febabc05b3c1497a4880f32e2b40b87d8a0ba95f419301716c",
-    "src/style.css": "d595aef9d164b5e4ad1ed5242cfa5b0a5607c30dcd6b324fb1389276c68957ed",
-    "src/components/interface.jsx": "ee97a707fe179c18687801c629c4596d4a886fdd4dd07a9ecb26451b53aded52",
-    "src/hooks/use-lockpad.js": "a9c04d451b7979e786bdb2f15788e8465bf5c864c9aa5cf5ffb56a10338e6977",
-    "src/lib/chain.mjs": "826e79fd3888648f6a453588c74225e493332a7a0a804cda84a328fb29157317",
+    "src/app.jsx": "e279723747291a4f4c908e178a055dc315d5fc54fc7b6f6ed8ef7e8e30b3f485",
+    "src/style.css": "76dcc385f86d6d2c1a931787ac68905e7b8dca518200ab6ab189f39c3585a420",
+    "src/theme.css": "014cd55cc9bc283857403174a1650ad689d609a75b79cd8c2f9192cf53bd2302",
+    "src/borrow.jsx": "7a852bf8ada9900d45d4a5526696b6d7904e07c95f63f8f21e7b558a40ef9335",
+    "src/components/interface.jsx": "7bb1d9452223346839a568fd43223d945a193107c7144dff39fd65094d725838",
+    "src/hooks/use-lockpad.js": "a570fcd34ebadb93b8f4dcac41a1813d7a21d62e6c5ac9cee46a44ef612e43ce",
+    "src/lib/chain.mjs": "30399a541a174169d4e2fade68f040d172d1c3267edfcfa40b28e224c79c1079",
     "src/lib/amounts.mjs": "f183e54bf1cd80b0f489ab13f321a9669f0265f4594537c32c8b6e6b4a78c7bb",
     "src/lib/market.mjs": "1904fc9482088b80d807189f94bd8990ac720a36aec2e4e499861ee32ae9dda8",
-    "scripts/demo-server.mjs": "a6e2bfec8be0f46df2f98506c4b89bb04954f37f05e39feeb1e2937ae9a1d2d6",
-    "scripts/sandbox.mjs": "d00d5742de0b2c078087ac7b67474846f8b9126f23813b35df2a158a7c734970",
-    "scripts/browser-test.mjs": "df22c1dd5888e36817bd3f5ab330b2ea90cefe3c122b2b5b7364c1d096f487ef",
+    "src/lib/lending.mjs": "d9b3a998b5ff63dc7db30569269a24fca6ce5a70619f08fb27b59082c66bb37d",
+    "scripts/demo-server.mjs": "1c55c3f036359dfe129df64c47e4e4d8495f204ad0655bda10a758eb76210010",
+    "scripts/sandbox.mjs": "89d9e76523df24e211c0de22f1972d5291595e0509b88bb0ed0e16c5698487b3",
+    "scripts/browser-test.mjs": "64c356168c42365256d5e7b269d8d979f591c74a955da1c7de7be2b5f9d6f0e2",
     "vite.config.js": "3fd08903abb97dce894ca9bc15b963d353768f0655ae5c567a12c55bf98ad213",
     "index.html": "e2a9cf6bb74a5d2a7436a9c0eed6cfaa822de294fd20fa5fa35aefef22091bde"
   }

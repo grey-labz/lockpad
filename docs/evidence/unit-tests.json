@@ -1,20 +1,22 @@
 {
   "status": "PASS",
-  "executedAt": "2026-11-13T17:52:31.246Z",
-  "tests": 35,
-  "passed": 35,
+  "executedAt": "2026-11-13T21:52:41.955Z",
+  "tests": 42,
+  "passed": 42,
   "failed": 0,
   "exitCode": 0,
   "sources": {
     "tests/amounts.test.mjs": "89b4bc58e53dce5809511c9aeda306e48f16cac5dde9e2ef3994fe597b1eef0b",
+    "tests/lending.test.mjs": "9eb0addbed7b54bdb577b694e3e3e33c8d83a622be7be0b4e3efe788040f833f",
     "tests/market.test.mjs": "a365b50f864446afa178f205a7c8c24f1fdef730abbe403585d3da7cd60762e4",
     "tests/receipts.test.mjs": "99fb34bda4b6ee9e4fb1bdf1eddc6eb723c13262a4e8dd3eed6061632fa54c04",
     "tests/release.test.mjs": "42e2b0e6575ee91717f0359a91df249aef3bd985d9ed32da2f23098d02ad0056",
     "tests/trade-proof.test.mjs": "a2d5cdc847bb062c5eccf5cfbac1e5c0db86cc521c7f2cb093c61f19c68f7bc5",
-    "scripts/unit-tests.mjs": "61abe764a44cadc2c9820c3711ae64005c03bea6172445f292ccf3dc36858e33",
+    "scripts/unit-tests.mjs": "67cfcf4923f637dff2c0109c2acb631cb5eb5755cd4591aa104a1225a41a0da0",
     "src/lib/amounts.mjs": "f183e54bf1cd80b0f489ab13f321a9669f0265f4594537c32c8b6e6b4a78c7bb",
     "src/lib/market.mjs": "1904fc9482088b80d807189f94bd8990ac720a36aec2e4e499861ee32ae9dda8",
-    "src/lib/chain.mjs": "826e79fd3888648f6a453588c74225e493332a7a0a804cda84a328fb29157317",
+    "src/lib/lending.mjs": "d9b3a998b5ff63dc7db30569269a24fca6ce5a70619f08fb27b59082c66bb37d",
+    "src/lib/chain.mjs": "30399a541a174169d4e2fade68f040d172d1c3267edfcfa40b28e224c79c1079",
     "scripts/lib/release.mjs": "98aa8283a5728fcda00507c69e8b3153aa54e82b720a4733e9f5816028526289",
     "scripts/lib/trade-proof.mjs": "a906b548ece29d7dd40ce7849314ec13b9154211e3a7bceffd37a6bfd840457b"
   }

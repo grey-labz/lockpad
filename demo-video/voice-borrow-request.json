@@ -1,0 +1,9 @@
+{
+  "provider": "ElevenLabs",
+  "voice": "Jack John - Conversational and Upbeat",
+  "voiceId": "7EzWGsX10sAS4c9m9cPf",
+  "model": "eleven_multilingual_v2",
+  "textSha256": "78c3e524cd5927f741540873da0be3a64d0d443f1de0a853b942ff930897433f",
+  "status": "COMPLETED",
+  "requestedAt": "2026-11-13T22:19:43.809Z"
+}

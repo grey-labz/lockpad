@@ -1,24 +1,24 @@
 # Lockpad
 
-Your funds are locked. Your options aren't.
+Lockpad gives an owner of a supported locked position two ways to get liquidity before maturity: borrow against it from a funded pool, or list its payout right for sale at a chosen price.
 
-Lockpad lets an owner sell a fixed-maturity payout right before its lock expires. A buyer pays less than the principal and claims the original payout at the original date. Selling a 1,000-token payout for 920 gives the seller an early exit and the buyer an 8% discount; the buyer's gross difference is 80 tokens, or 8.70% of the purchase price, before gas and storage.
+For the prototype's fixed 1,000 TUSD payout, the pool quotes 650 TUSD with 663 due before maturity. Repayment returns the original position. If that offer is too low, the owner can list for 920 TUSD instead; a buyer must accept the price. These are illustrative terms using a test token with no monetary value.
 
-The working local prototype uses three actual NEAR contracts: a separate reference vault, a payout-right marketplace, and a clearly labelled test token. Principal stays in its vault. The market escrows its NFT, delivers it to the buyer, and releases withdrawable seller proceeds after delivery. Unused buyer funding can be withdrawn.
+Four working NEAR contracts separate the reference vault, funded lending pool, marketplace and test token. Principal stays in the source vault. The payout NFT secures a loan or moves to the buyer after a sale. A position cannot be pledged and sold simultaneously.
 
-Run with Node 22.12 or newer:
+With Node 22.12+:
 
 ```sh
 npm ci --ignore-scripts
 npm run demo
 ```
 
-Open `http://127.0.0.1:5273`. The local NEAR Sandbox creates temporary test wallets and real local positions. No public-network transactions or valuable tokens are used.
+Open `http://127.0.0.1:5273`. Choose Alice, open **My positions**, then **Borrow** to see the pool quote. Accept and repay to recover the position, or use **List this position instead**. Switch to Bob to buy, then Alice to withdraw the proceeds. After the original maturity, Bob claims the payout. The [judge guide](docs/SETUP.md) explains each step and verification.
 
-[Setup and judge guide](docs/SETUP.md) · [Contract architecture](docs/ARCHITECTURE.md) · [Hackathon materials](docs/HACKATHON-MATERIALS.md)
+The demo runs actual contracts in an isolated local NEAR Sandbox with temporary wallets. The [two-minute narrated video](https://github.com/grey-labz/lockpad/releases/download/hackathon-prototype-2026-11-13/lockpad-demo.mp4) shows borrowing, repayment, sale, seller payment, maturity payout and receipts. Local time advancement is explicitly labelled. Saved checks cover 42 unit cases, 26 lending behaviors and 20 browser behaviors with no browser errors.
 
-Only the reference vault is integrated. Rhea and other third-party DeFi locks require a verified source adapter. This is an unaudited prototype with retained upgrade keys and documented callback recovery limits.
+Only the fixed-payout reference vault is integrated. [NEAR DEX research](docs/research/near-dex-position-transferability-2026-11-13.md) identifies Rhea DCL NFTs and transferable Rhea/Jumbo LP shares as adapter candidates. An account-bound lock cannot become transferable collateral simply by wrapping its displayed receipt. DEX adapters, variable-asset valuation and mainnet deployment remain proposed work. The contracts are unaudited and retain upgrade keys; [architecture and limits](docs/ARCHITECTURE.md) describes recovery constraints.
 
-The [earlier public release](https://greyw0rks.github.io/timeshift/) and [public repository](https://github.com/greyw0rks/timeshift) predate this local implementation. The new three-contract marketplace has not been published or deployed to public testnet.
+[Hackathon materials](docs/HACKATHON-MATERIALS.md) · [Submission copy](SUBMISSION.md) · [Source](https://github.com/grey-labz/lockpad)
 
-The NEAR HACKATHON work is on `hackathon/lockpad-resale`, starting from [baseline cb4097c](https://github.com/greyw0rks/timeshift/commit/cb4097c1249052d2f8940d9c88969b99023e98c1). It adds separate-source custody, NFT settlement, recoverable funding and a new marketplace UI; the [release guide](docs/RELEASE.md) identifies the review diff. It uses React, Vite, NEAR SDK and contract standards, NEAR Connect and near-api-js, with Sandbox, near-workspaces and Playwright for verification. [Greed Machine](https://github.com/greyw0rks/greed-machine) is a separate project by the same builder.
+Built at NEAR HACKATHON. The work extends the earlier [TimeShift baseline](https://github.com/greyw0rks/timeshift/commit/cb4097c1249052d2f8940d9c88969b99023e98c1); [review the hackathon changes](https://github.com/grey-labz/lockpad/compare/cb4097c1249052d2f8940d9c88969b99023e98c1...main). It uses React, Vite, NEAR SDK and contract standards, NEAR Connect and near-api-js, with near-workspaces and Playwright for verification. [Greed Machine](https://github.com/greyw0rks/greed-machine) is a separate project by the same builder.

@@ -85,9 +85,9 @@ try {
   await page.locator(".position-card").first().waitFor({ state: "visible" });
   assert.equal(await page.locator(".home-market .position-card").count(), 3);
   assert.match(await page.locator(".network-bar").textContent(), /Local NEAR Sandbox/);
-  assert.match(await page.locator(".floating-payout").textContent(), /Illustrative trade/);
+  assert.match(await page.locator(".hero-comparison").textContent(), /Illustrative example/);
   await screenshot("home-desktop");
-  record("Home separates illustrative trade cards from actual local listings");
+  record("Home distinguishes illustrative borrowing and sale amounts from actual local listings");
 
   await route("/marketplace");
   await page.getByLabel("Sort positions").selectOption("discount");
@@ -107,7 +107,84 @@ try {
 
   await choose("Alice");
   await portfolio();
-  await page.locator('[data-position-id="1"]').getByRole("button", { name: "List position" }).click();
+  await page.getByRole("button", { name: "Get test tokens", exact: true }).click();
+  await notice("Test tokens added");
+  const aliceBeforeBorrow = BigInt(await tokenBalance(alice));
+  await page.locator('[data-position-id="1"]').getByRole("button", { name: "Borrow", exact: true }).click();
+  await page.locator(".offer-maximum").waitFor();
+  assert.match(await page.locator(".offer-maximum").textContent(), /650/);
+  assert.match(await page.locator(".repayment-total").textContent(), /663/);
+  await screenshot("borrow-desktop");
+  await page.getByLabel("Amount to borrow").fill("651");
+  assert.equal(await page.getByRole("button", { name: "Review borrowing offer" }).isDisabled(), true);
+  await page.getByLabel("Amount to borrow").fill("650");
+  const beforeBorrowReview = server.receipts.size;
+  await page.getByRole("button", { name: "Review borrowing offer" }).click();
+  await page.keyboard.press("Escape");
+  assert.equal(server.receipts.size, beforeBorrowReview);
+  record("The borrowing quote enforces the actual collateral limit and review never signs");
+
+  await page.getByRole("button", { name: "Review borrowing offer" }).click();
+  const beforeStaleQuote = txCount("nft_transfer_call");
+  await server.send(server.accounts.nora, server.token, "ft_transfer_call", { receiver_id: server.pool.accountId, amount: "1000000", msg: JSON.stringify({ action: "fund" }) });
+  await page.getByRole("button", { name: /Confirm borrow/ }).click();
+  await page.locator("dialog").getByRole("alert").waitFor({ state: "visible", timeout: 60000 });
+  assert.match(await page.locator("dialog").getByRole("alert").textContent(), /quote changed/);
+  assert.equal(txCount("nft_transfer_call"), beforeStaleQuote);
+  assert.equal((await getPosition("1")).owner_id, alice);
+  await page.waitForFunction(() => !document.querySelector("dialog .icon-button")?.disabled);
+  await page.keyboard.press("Escape");
+  await page.locator(".offer-maximum").waitFor();
+  record("A changed funded-pool quote is rejected before the original payout NFT moves");
+
+  await page.getByRole("button", { name: "Review borrowing offer" }).click();
+  await page.getByRole("button", { name: /Confirm borrow/ }).evaluate(button => { button.click(); button.click(); });
+  await page.locator("dialog").waitFor({ state: "hidden", timeout: 60000 });
+  await notice("TUSD borrowed");
+  const loan = (await server.pool.view("get_loans_by_borrower", { borrower_id: alice, from_index: 0, limit: 100 }))[0];
+  assert.equal(loan.status, "Active");
+  assert.equal(loan.amount, "650000000");
+  assert.equal(loan.repay_amount, "663000000");
+  assert.equal((await getPosition("1")).owner_id, server.pool.accountId);
+  assert.equal((await getPosition("1")).unlock_at, original.unlock_at);
+  assert.equal(await tokenBalance(server.vault.accountId), originalVaultBalance);
+  assert.equal(BigInt(await tokenBalance(alice)), aliceBeforeBorrow + 650000000n);
+  assert.equal(txCount("draw_loan"), 1);
+  assert.equal(await page.locator('[data-position-id="1"]').count(), 0);
+  await screenshot("loan-active-desktop");
+  const beforeLoanReload = server.receipts.size;
+  await page.reload();
+  await page.locator('[data-loan-id="' + loan.id + '"]').waitFor();
+  assert.equal(server.receipts.size, beforeLoanReload);
+  record("A double press borrows once, keeps principal and maturity unchanged, and reload cannot reborrow");
+
+  await choose("Bob");
+  await route("/borrow");
+  await page.getByRole("heading", { name: "No eligible position in this wallet" }).waitFor();
+  assert.equal(await page.locator(".offer-maximum").count(), 0);
+  assert.equal(await page.locator(".loan-card").count(), 0);
+  await choose("Alice");
+  await portfolio();
+  await page.getByRole("button", { name: "Repay 663 TUSD", exact: true }).click();
+  await page.getByRole("button", { name: /Confirm repayment/ }).click();
+  await page.locator("dialog").waitFor({ state: "hidden", timeout: 60000 });
+  await notice("Loan repaid");
+  assert.equal((await server.pool.view("get_loan", { loan_id: loan.id })).status, "Repaid");
+  const repaid = await getPosition("1");
+  assert.equal(repaid.owner_id, alice);
+  assert.equal(repaid.principal, original.principal);
+  assert.equal(repaid.unlock_at, original.unlock_at);
+  assert.equal(await tokenBalance(server.vault.accountId), originalVaultBalance);
+  assert.equal(BigInt(await tokenBalance(alice)), aliceBeforeBorrow - 13000000n);
+  await screenshot("loan-repaid-desktop");
+  report.borrowing = { loan, original, repaid, actualDisbursement: "650000000", actualRepayment: "663000000" };
+  record("Wallet changes clear borrowing offers, and repayment returns the same source payout NFT");
+
+  await page.locator('[data-position-id="1"]').getByRole("button", { name: "Borrow", exact: true }).click();
+  await page.locator(".offer-maximum").waitFor();
+  await page.getByRole("button", { name: "List this position instead" }).click();
+  assert.match(await page.locator(".selected-summary").textContent(), /Reference position #1/);
+  record("The sale alternative carries the quoted position directly into the listing form");
   await page.getByLabel("Sale price").fill("1000");
   assert.equal(await page.getByRole("button", { name: "Review listing" }).isDisabled(), true);
   await page.getByLabel("Sale price").fill("920");
@@ -172,7 +249,8 @@ try {
   await page.getByRole("button", { name: "Confirm withdrawal", exact: true }).click();
   await page.locator("dialog").waitFor({ state: "hidden", timeout: 60000 });
   await notice("Sale proceeds arrived");
-  assert.equal(await tokenBalance(alice), "920000000");
+  const aliceAfterSale = aliceBeforeBorrow - 13000000n + 920000000n;
+  assert.equal(BigInt(await tokenBalance(alice)), aliceAfterSale);
   assert.equal((await ledger(alice)).proceeds, "0");
   record("Seller withdraws the agreed 920 TUSD early-exit payment");
 
@@ -204,13 +282,13 @@ try {
   await portfolio();
   await page.getByRole("button", { name: "Get test tokens", exact: true }).click();
   await notice("Test tokens added");
-  assert.equal(await tokenBalance(alice), "1920000000");
+  assert.equal(BigInt(await tokenBalance(alice)), aliceAfterSale + 1000000000n);
   await page.getByRole("button", { name: "Create test position", exact: true }).click();
   await page.getByLabel("Test principal", { exact: true }).fill("10");
   await page.getByLabel("Lock term").selectOption("604800");
   await page.locator("dialog").getByRole("button", { name: "Create test position", exact: true }).click();
   await page.locator("dialog").waitFor({ state: "hidden", timeout: 60000 });
-  await notice("Demo lock created");
+  await notice("Test position created");
   const newPosition = (await server.vault.view("get_positions_by_owner", { owner_id: alice, from_index: "0", limit: 100 })).find(position => position.status === "Active");
   assert.ok(newPosition);
   assert.equal(newPosition.principal, "10000000");
@@ -285,19 +363,28 @@ try {
   const layouts = [];
   for (const width of [1440, 768, 390, 320]) {
     await page.setViewportSize({ width, height: width > 700 ? 1000 : 844 });
-    for (const path of ["/", "/marketplace", "/positions", "/sell", "/activity", "/sources", "/position/" + sale.id]) {
+    for (const path of ["/", "/borrow", "/marketplace", "/positions", "/sell", "/activity", "/sources", "/position/" + sale.id]) {
       await route(path);
       if (path.startsWith("/position/")) await page.locator(".purchase-panel").waitFor();
       await page.evaluate(() => document.fonts.ready);
       const layout = await page.evaluate(() => ({ viewport: innerWidth, content: document.documentElement.scrollWidth }));
       assert.ok(layout.content <= layout.viewport + 1, "Horizontal overflow at " + width + " " + path);
+      if (path === "/") {
+        const hero = await page.evaluate(() => {
+          const copy = document.querySelector(".hero-copy").getBoundingClientRect();
+          const comparison = document.querySelector(".hero-comparison").getBoundingClientRect();
+          return { overlapWidth: Math.min(copy.right, comparison.right) - Math.max(copy.left, comparison.left), overlapHeight: Math.min(copy.bottom, comparison.bottom) - Math.max(copy.top, comparison.top) };
+        });
+        assert.ok(hero.overlapWidth <= 0 || hero.overlapHeight <= 0, "The hero text covers its borrowing/sale comparison at " + width);
+        layout.heroContentSeparate = true;
+      }
       layouts.push({ width, path, ...layout });
       if (path === "/" && width !== 1440) await screenshot("home-" + width);
-      if (width === 390 && ["/marketplace", "/positions", "/sell", "/activity", "/position/" + sale.id].includes(path)) await screenshot(path.startsWith("/position/") ? "position-mobile" : path.slice(1) + "-mobile");
+      if (width === 390 && ["/borrow", "/marketplace", "/positions", "/sell", "/activity", "/position/" + sale.id].includes(path)) await screenshot(path.startsWith("/position/") ? "position-mobile" : path.slice(1) + "-mobile");
     }
   }
   report.layouts = layouts;
-  record("Seven app routes fit desktop, tablet, 390px and 320px without horizontal overflow");
+  record("Eight app routes fit desktop, tablet, 390px and 320px; hero copy and comparison never overlap");
 
   await page.setViewportSize({ width: 390, height: 844 });
   await route("/");
@@ -313,7 +400,7 @@ try {
   publicServer = await startPublicPreview();
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await page.goto(publicServer.url);
-  await page.getByRole("heading", { name: /Your funds are locked/ }).waitFor();
+  await page.getByRole("heading", { name: /Locked position/ }).waitFor();
   await page.waitForFunction(() => !document.querySelector(".skeleton-card"));
   assert.equal(await page.locator(".position-card").count(), 0);
   assert.equal(await page.getByRole("button", { name: "Connect wallet", exact: true }).isDisabled(), true);
@@ -329,7 +416,7 @@ try {
   report.executedAt = new Date().toISOString();
   report.contractBuild = JSON.parse(await readFile(join(evidence, "contract-build.json"), "utf8"));
   report.sources = {};
-  for (const file of ["src/app.jsx", "src/style.css", "src/components/interface.jsx", "src/hooks/use-lockpad.js", "src/lib/chain.mjs", "src/lib/amounts.mjs", "src/lib/market.mjs", "scripts/demo-server.mjs", "scripts/sandbox.mjs", "scripts/browser-test.mjs", "vite.config.js", "index.html"]) report.sources[file] = createHash("sha256").update(await readFile(join(project, file))).digest("hex");
+  for (const file of ["src/app.jsx", "src/style.css", "src/theme.css", "src/borrow.jsx", "src/components/interface.jsx", "src/hooks/use-lockpad.js", "src/lib/chain.mjs", "src/lib/amounts.mjs", "src/lib/market.mjs", "src/lib/lending.mjs", "scripts/demo-server.mjs", "scripts/sandbox.mjs", "scripts/browser-test.mjs", "vite.config.js", "index.html"]) report.sources[file] = createHash("sha256").update(await readFile(join(project, file))).digest("hex");
   await writeFile(join(evidence, "browser-receipts.json"), JSON.stringify({ network: report.network, accounts: report.accounts, recordedAt: report.executedAt, receipts: [...server.receipts.values()] }, null, 2) + "\n");
   console.log("PASS:", checks.length, "browser behavior checks; screenshots and local receipts saved.");
 } catch (error) {

@@ -72,6 +72,6 @@ export function Timeline({ createdAt, unlockAt, now }) {
     <div className="section-label"><span>Original maturity timeline</span><span>{timeLeft(unlockAt, now)}</span></div>
     <div className="timeline-track" role="progressbar" aria-label="Time until the original maturity" aria-valuenow={Math.round(progress)} aria-valuemin={0} aria-valuemax={100}><span style={{ width: `${progress}%` }} /></div>
     <div className="timeline-dates"><div><span>Locked</span><strong>{maturityDate(createdAt, true)}</strong></div><div><span>Claim opens</span><strong>{maturityDate(unlockAt, true)}</strong></div></div>
-    <p>Buying or selling keeps this date and the full payout unchanged.</p>
+    <p>Borrowing or selling preserves this date and the original source payout.</p>
   </div>;
 }

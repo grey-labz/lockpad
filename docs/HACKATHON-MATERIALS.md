@@ -1,44 +1,39 @@
 # Lockpad: idea → build → demo
 
-The current hackathon path is a reproducible local build and a working demo video, followed by publication of the source, the human's X demo post, and the confirmed submission. Public demo positions and a public testnet deployment are optional. The organizer's [Q-012](evidence/hackathon-rules-2026-11-13.md) explicitly accepts local-only demos with a public repository, reproducible README and X video; screenshots alone are insufficient when the app cannot be opened.
-
 ## Idea
 
-Someone locks funds for 30 days and needs liquidity on day 15. Lockpad lets them sell the right to that future payout at a discount. Selling a 1,000-token payout for 920 gives the seller early liquidity; the buyer receives the original payout right and claims at its original maturity. The principal remains in its source vault throughout the sale.
+A person needs liquidity while their position is still locked. Lockpad offers a funded-pool borrowing quote; if the amount does not suit them, they can choose a marketplace sale price instead. Both paths require enforceable control of the payout right, so account-bound positions remain unsupported until a verified adapter or beneficiary mechanism exists.
 
-## What is built
+## Build
 
-The working prototype has three actual NEAR contracts: a separate reference vault, payout-right marketplace and zero-value test token. The market verifies the source and seller, escrows the payout NFT, accepts recoverable purchase funding, transfers the NFT and releases withdrawable seller proceeds after delivery. The buyer claims from the originating vault after the original maturity.
+Four actual NEAR contracts implement a reference vault, funded lending pool, payout-right marketplace and zero-value TUSD token. A 1,000 TUSD fixed payout produces an illustrative 650 loan and 663 repayment quote. Repayment returns the original NFT; an unpaid loan can settle at original maturity, keeping the amount due and crediting the remaining payout to its borrower. A sale transfers the original NFT before crediting the seller's withdrawable proceeds. The principal remains in the reference vault.
 
-The app includes the approved teal design, market search and filters, source-checked position details, ownership and balance views, listing, purchase, withdrawal, maturity claim and receipt history. Current checks pass: 35 unit checks, 11 release/receipt checks and 15 browser behaviors. The saved 19-contract-behavior run still matches the unchanged source and Wasm hashes.
+The app uses the supplied black-and-green palette and includes borrowing quotes, repayment, the sale alternative, market search and filters, position details, source eligibility, wallet balances, seller withdrawals, maturity claims and native receipts. Saved evidence records 42 unit cases, 26 lending behaviors and 20 browser behaviors across desktop, tablet and small mobile layouts. The video recording independently checks exact loan, repayment, sale and payout amounts.
 
-Only the reference vault is integrated. It is a test instrument, not a yield strategy. No Rhea or other third-party lock, AI, NEAR Intents, public adoption or guaranteed return is claimed.
+Only the fixed-payout reference vault is integrated. The [research](research/near-dex-position-transferability-2026-11-13.md) recommends Rhea DCL NFTs for an initial adapter and identifies Rhea/Jumbo MFT shares as further candidates. Spin vault shares need additional operational and redemption checks. Existing account-bound Rhea locks are not importable simply by wrapping a receipt. DEX collateral valuation and adapter implementation remain proposed work before mainnet.
 
-## Demo recording outline — about 90 seconds
+## Demo — two-minute narrated walkthrough
 
-| Time | Show | Explain |
-| --- | --- | --- |
-| 0–10 s | Lockpad landing page and illustrative 1,000 → 920 → 1,000 example | “Your funds are locked. Your options aren't. Sell the future payout when you need liquidity early.” |
-| 10–20 s | Existing position in My positions, its source and original maturity | “This working build trades the payout NFT. Its principal stays in a separate source vault.” |
-| 20–35 s | Seller reviews and lists one local 1,000 TUSD position for 920 TUSD | Show the 8% discount and original maturity. Listing alone earns no sale proceeds. |
-| 35–55 s | Switch to the buyer, review and confirm the purchase | Show accepted funding, delivered NFT and its unchanged principal and maturity. |
-| 55–65 s | Switch to the seller and withdraw proceeds | Show the seller's actual 920 TUSD token payment and receipt. |
-| 65–80 s | Buyer claims after the source's original maturity | Show the actual 1,000 TUSD payout and Redeemed status. Cut the waiting period; if local Sandbox time is advanced, label it explicitly and retain the original source timestamp. |
-| 80–90 s | Activity receipts and a final product screen | “A discounted early exit, settled by NEAR contracts. The reference-vault prototype and setup are in the public source.” |
+| Chapter | Actual app behavior |
+| --- | --- |
+| Idea | A supported position offers borrow or sell choices. |
+| Build | Alice's 1,000 TUSD source payout and the four-contract prototype. |
+| Quote | Immediate 650 TUSD offer, 2% one-time fee and 663 due. |
+| Borrow | The payout NFT secures the loan; 650 reaches Alice's wallet. |
+| Repay | Alice pays 663 and recovers the same NFT and original maturity. |
+| List | Alice chooses a 920 sale price; a buyer is required. |
+| Buy | Bob reviews, funds and receives the original payout NFT. |
+| Seller payment | Alice withdraws the actual 920 TUSD proceeds. |
+| Maturity | Local Sandbox time advances; the original timestamp is unchanged. |
+| Payout | Bob receives the full 1,000 TUSD and the position is redeemed. |
+| Receipts | Confirmed local actions and the proposed scope before mainnet. |
 
-One local test position is the input for this complete demonstration. Keep the Local NEAR Sandbox and zero-value-token labels visible. A fresh one-minute term permits a short real-time recording; the existing five-minute term gives more time for wallet actions. Neither public market seeding nor deployment is needed for this video.
+The video carries a persistent **LOCAL NEAR SANDBOX · ZERO-VALUE TUSD** disclosure. Actors are temporary builder-controlled accounts. The time advance is explicitly labelled. This is actual local contract execution; it is not evidence of public activity or independent adoption.
 
-Record actual app behavior. The current preview is `http://127.0.0.1:5273/`; restart with `npm run demo` for fresh temporary wallets. The [judge guide](SETUP.md) contains the exact seller → buyer → claim sequence. This outline is ready; a new demo video has not yet been recorded or uploaded.
+The export is [lockpad-demo.mp4](../demo-video/renders/lockpad-demo.mp4); the editable HyperFrames project, capture assertions and delivery evidence are in `demo-video/`. Narration uses the previously authorized ElevenLabs Jack John voice. The earlier 90-second resale draft is preserved under `demo-video/archive/resale-v1/`.
 
-## Submission description draft
+## Submit
 
-Lockpad helps owners exit a fixed-maturity payout before its lock expires. An owner lists a supported payout NFT at a discount; a buyer funds the purchase, receives that original NFT and claims its principal at the original maturity. NEAR contracts verify source data and seller authority, deliver the payout right and release seller proceeds after delivery. Principal remains in a separate reference vault. The working local build includes market filters, position details, listing, purchase, withdrawal, maturity claim and receipts. It uses a zero-value test token and a reference source; no third-party DeFi integration or independent adoption is claimed.
+Use https://github.com/grey-labz/lockpad as the source URL and the [ready description and X draft](../SUBMISSION.md). The user publishes the video on X, then enters their personal fields, team size, mainnet prize account, chosen tracks, consent and public demo-post URL at https://nearhackathon.com/#apply. No personal fields or application are submitted by the preparation tools.
 
-Suggested primary track: **Unstoppable DeFi (`defi`)**. The human confirms the final tracks and personal submission fields. Greed Machine is disclosed as a separate project by the same builder. Confirm the person's existing entries because at most two independent projects are allowed.
-
-## X draft — unpublished
-
-> Need your locked funds early? Lockpad lets you sell a future payout at a discount. The local demo shows the NFT sale, seller payment and maturity claim on NEAR. Built at NEAR HACKATHON. @NEARProtocol #NEARHackathon
-> https://github.com/greyw0rks/timeshift
-
-Publish the current build before using that source link. The human attaches the working demo video, publishes the post and provides its public URL. Submission requires that URL, the public source, a human-provided mainnet prize account and contact fields, consent, and explicit confirmation of the exact payload. Development and submission end **14 November 2026 at 23:59 UTC**, or **15 November at 00:59 Lagos**.
+The saved organizer Q-012 permits this local-only path; public testnet deployment and publicly seeded positions are optional. The recorded deadline is **14 November 2026 at 23:59 UTC**, or **15 November at 00:59 Lagos**. Recheck live rules, confirm existing entries, and submit only once.
